@@ -9,7 +9,6 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
   public static PlayerController _instance;
-
   public Rigidbody2D playerBody;
   public BoxCollider2D groundCheck;
   public LayerMask groundLayer;
@@ -22,7 +21,7 @@ public class PlayerController : MonoBehaviour
   readonly float dashSpeed = 30f;
   public bool canDoubleJump;
   public bool canDash;
-  bool facingRight = true;
+  bool facingRight;
   bool grounded;
   bool dashing;
   int extraJump;
@@ -35,9 +34,8 @@ public class PlayerController : MonoBehaviour
     if (_instance == null)
     {
       _instance = this;
-      canDoubleJump = true;
-      canDash = true;
-      sprite.flipX = true;
+      canDoubleJump = false;
+      canDash = false;
       anim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
       sprite = GameObject.FindGameObjectWithTag("Player").GetComponent<SpriteRenderer>();
       groundLayer = LayerMask.GetMask("Ground");
@@ -145,7 +143,6 @@ public class PlayerController : MonoBehaviour
     if (itemsOwned.Contains(item))
     {
       itemsOwned.Remove(item);
-
     }
   }
 

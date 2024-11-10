@@ -7,8 +7,8 @@ using TMPro;
 
 public class DialogueManager : MonoBehaviour
 {
-  public TextMeshProUGUI characterName;
-  public TextMeshProUGUI sentence;
+  public Text characterName;
+  public Text sentence;
 
   public Queue<string> dialogueSentences = new Queue<string>();
 
