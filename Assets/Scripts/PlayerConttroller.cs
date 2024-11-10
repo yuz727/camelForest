@@ -15,7 +15,8 @@ public class PlayerController : MonoBehaviour
   public LayerMask groundLayer;
 
   public List<Items> itemsOwned;
-  Animator anim;
+  public Animator anim;
+  public SpriteRenderer sprite;
   readonly float speed = 5f;
   readonly float jumpSpeed = 30f;
   readonly float dashSpeed = 30f;
@@ -36,6 +37,9 @@ public class PlayerController : MonoBehaviour
       _instance = this;
       canDoubleJump = true;
       canDash = true;
+      sprite.flipX = true;
+      anim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
+      sprite = GameObject.FindGameObjectWithTag("Player").GetComponent<SpriteRenderer>();
       groundLayer = LayerMask.GetMask("Ground");
       playerBody = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
       gravity = playerBody.gravityScale;
@@ -58,22 +62,19 @@ public class PlayerController : MonoBehaviour
       Move();
       if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1)) && (grounded || extraJump > 0))
       {
-        anim.SetBool("isJump",true);
+        anim.SetBool("isJump", true);
         Jump();
       }
-      else if((Input.GetKeyUp(KeyCode.Space)|| Input.GetKeyUp(KeyCode.JoystickButton1)) && (grounded || extraJump > 0)){
-            anim.SetBool("isJump",false);
+      else if ((Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.JoystickButton1)))
+      {
+        anim.SetBool("isJump", false);
       }
       if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.JoystickButton5))
           && canDash)
       {
-        anim.SetBool("isDash",true);
+        anim.SetBool("isDash", true);
         Dash();
       }
-      else if(Input.GetKeyUp(KeyCode.LeftShift)|| Input.GetKeyUp(KeyCode.K) || Input.GetKeyUp(KeyCode.JoystickButton5)){
-            anim.SetBool("isDash",false);
-      }
-
     }
   }
   void FixedUpdate()
@@ -90,13 +91,18 @@ public class PlayerController : MonoBehaviour
   {
     if (inputHorizontalDirection == 0.0f)
     {
+      anim.SetBool("isRun", false);
       playerBody.velocity = new Vector2(0, playerBody.velocity.y);
       return;
     }
-    facingRight = inputHorizontalDirection > 0f;
-    anim.SetBool("isRun",true);
+    if ((facingRight && inputHorizontalDirection < 0.0f) || (!facingRight && inputHorizontalDirection > 0.0f))
+    {
+      facingRight = !facingRight;
+      sprite.flipX = !sprite.flipX;
+    }
+    if (facingRight)
+      anim.SetBool("isRun", true);
     playerBody.velocity = new Vector2(inputHorizontalDirection * speed, playerBody.velocity.y);
-    anim.SetBool("isRun",false);
   }
 
   void Jump()
@@ -124,6 +130,7 @@ public class PlayerController : MonoBehaviour
     playerBody.velocity = new Vector2(playerBody.velocity.x, yVel);
     canDash = false;
     dashing = false;
+    anim.SetBool("isDash", false);
     StartCoroutine(DashCooldown());
   }
 
