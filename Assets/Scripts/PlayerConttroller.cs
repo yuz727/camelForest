@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
   public LayerMask groundLayer;
 
   public List<Items> itemsOwned;
-
+  Animator anim;
   readonly float speed = 5f;
   readonly float jumpSpeed = 30f;
   readonly float dashSpeed = 30f;
@@ -58,13 +58,22 @@ public class PlayerController : MonoBehaviour
       Move();
       if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1)) && (grounded || extraJump > 0))
       {
+        anim.SetBool("isJump",true);
         Jump();
+      }
+      else if((Input.GetKeyUp(KeyCode.Space)|| Input.GetKeyUp(KeyCode.JoystickButton1)) && (grounded || extraJump > 0)){
+            anim.SetBool("isJump",false);
       }
       if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.JoystickButton5))
           && canDash)
       {
+        anim.SetBool("isDash",true);
         Dash();
       }
+      else if(Input.GetKeyUp(KeyCode.LeftShift)|| Input.GetKeyUp(KeyCode.K) || Input.GetKeyUp(KeyCode.JoystickButton5)){
+            anim.SetBool("isDash",false);
+      }
+
     }
   }
   void FixedUpdate()
@@ -85,8 +94,9 @@ public class PlayerController : MonoBehaviour
       return;
     }
     facingRight = inputHorizontalDirection > 0f;
+    anim.SetBool("isRun",true);
     playerBody.velocity = new Vector2(inputHorizontalDirection * speed, playerBody.velocity.y);
-
+    anim.SetBool("isRun",false);
   }
 
   void Jump()
