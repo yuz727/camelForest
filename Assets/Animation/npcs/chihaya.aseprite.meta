@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f9858f0532ec890478b23bfcdfc2bc0f
+guid: f55ab5b1461d3f14793f6faae5ec50b1
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -121,18 +121,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: npc
+  - name: chihaya
     originalName: 
-    pivot: {x: 0.46808508, y: 0}
+    pivot: {x: 0.4375, y: -0.036363635}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 47
-      height: 63
-    spriteID: 2a7cf2b83b0c767478177d0953d4afb9
+      width: 48
+      height: 55
+    spriteID: dd5bb6317f94ed64fb9b1896689e8feb
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -144,24 +144,36 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 1031845021
-    name: npc
+    guid: -1571701089
+    name: chihaya
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Kun
+    - name: chihaya
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 10
-        y: 0
-        width: 47
-        height: 63
-      spriteId: 2a7cf2b83b0c767478177d0953d4afb9
+        x: 11
+        y: 2
+        width: 48
+        height: 55
+      spriteId: dd5bb6317f94ed64fb9b1896689e8feb
     linkedCells: []
     parentIndex: -1
-  platformSettings: []
+  platformSettings:
+  - name: Default
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
