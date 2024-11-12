@@ -5,6 +5,7 @@ using System.Threading;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -34,19 +35,37 @@ public class PlayerController : MonoBehaviour
     if (_instance == null)
     {
       _instance = this;
-      canDoubleJump = false;
-      canDash = false;
+      canDoubleJump = true;
+      canDash = true;
+      DontDestroyOnLoad(gameObject);
+    }
+    else
+    {
+      Destroy(gameObject);
+    }
+  }
+  void OnEnable()
+  {
+    SceneManager.sceneLoaded += OnSceneLoaded;
+  }
+
+  void OnDisable()
+  {
+    SceneManager.sceneLoaded -= OnSceneLoaded;
+  }
+
+  void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+  {
+    Debug.Log("Entering " + scene.name);
+    if (!scene.name.Equals("Menu"))
+    {
+      facingRight = false;
       anim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
       sprite = GameObject.FindGameObjectWithTag("Player").GetComponent<SpriteRenderer>();
       groundLayer = LayerMask.GetMask("Ground");
       playerBody = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
       gravity = playerBody.gravityScale;
       groundCheck = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<BoxCollider2D>();
-      DontDestroyOnLoad(gameObject);
-    }
-    else
-    {
-      Destroy(gameObject);
     }
   }
 
@@ -63,7 +82,7 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("isJump", true);
         Jump();
       }
-      else if ((Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.JoystickButton1)))
+      else if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.JoystickButton1))
       {
         anim.SetBool("isJump", false);
       }
@@ -75,6 +94,7 @@ public class PlayerController : MonoBehaviour
       }
     }
   }
+
   void FixedUpdate()
   {
     grounded = groundCheck.IsTouchingLayers(groundLayer);
@@ -138,7 +158,7 @@ public class PlayerController : MonoBehaviour
     canDash = true;
   }
 
-  void useItem(Items item)
+  public void UseItem(Items item)
   {
     if (itemsOwned.Contains(item))
     {
