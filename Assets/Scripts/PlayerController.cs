@@ -118,8 +118,8 @@ public class PlayerController : MonoBehaviour
       facingRight = !facingRight;
       sprite.flipX = !sprite.flipX;
     }
-    if (facingRight)
-      anim.SetBool("isRun", true);
+    // if (facingRight)
+    anim.SetBool("isRun", true);
     playerBody.velocity = new Vector2(inputHorizontalDirection * speed, playerBody.velocity.y);
   }
 
