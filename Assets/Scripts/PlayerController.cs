@@ -13,90 +13,83 @@ public class PlayerController : MonoBehaviour
   public Rigidbody2D playerBody;
   public BoxCollider2D groundCheck;
   public LayerMask groundLayer;
-
-  public List<Items> itemsOwned;
   public Animator anim;
   public SpriteRenderer sprite;
-  readonly float speed = 5f;
-  readonly float jumpSpeed = 30f;
+  readonly float acceleration = 50f;
+  readonly float maxHorizontalSpeed = 5f;
+  readonly float maxJumpSpeed = 15f;
   readonly float dashSpeed = 30f;
+
+  public SpecialItems specialItem;
+  public List<Items> itemsOwned;
   public bool canDoubleJump;
   public bool canDash;
+  public bool talking;
+  public int extraJump;
   bool facingRight;
   bool grounded;
   bool dashing;
-  int extraJump;
+
+  bool canJump = true;
+  bool jumping;
+  float jumpSpeed = 0f;
+
   float inputHorizontalDirection;
-  float gravity;
-  float yVel;
 
-  void Awake()
-  {
-    if (_instance == null)
-    {
-      _instance = this;
-      canDoubleJump = true;
-      canDash = true;
-      DontDestroyOnLoad(gameObject);
-    }
-    else
-    {
-      Destroy(gameObject);
-    }
-  }
-  void OnEnable()
-  {
-    SceneManager.sceneLoaded += OnSceneLoaded;
-  }
 
-  void OnDisable()
-  {
-    SceneManager.sceneLoaded -= OnSceneLoaded;
-  }
-
-  void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-  {
-    Debug.Log("Entering " + scene.name);
-    if (!scene.name.Equals("Menu"))
-    {
-      facingRight = false;
-      anim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
-      sprite = GameObject.FindGameObjectWithTag("Player").GetComponent<SpriteRenderer>();
-      groundLayer = LayerMask.GetMask("Ground");
-      playerBody = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
-      gravity = playerBody.gravityScale;
-      groundCheck = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<BoxCollider2D>();
-    }
-  }
 
   void Update()
   {
-    inputHorizontalDirection = Input.GetAxisRaw("Horizontal");
-
-    if (!dashing)
+    if (dashing || talking)
     {
-      playerBody.gravityScale = gravity;
-      Move();
-      if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1)) && (grounded || extraJump > 0))
-      {
-        anim.SetBool("isJump", true);
-        Jump();
-      }
-      else if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.JoystickButton1))
-      {
-        anim.SetBool("isJump", false);
-      }
-      if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.JoystickButton5))
-          && canDash)
-      {
-        anim.SetBool("isDash", true);
-        Dash();
-      }
+      anim.SetBool("isJump", false);
+      anim.SetBool("isDash", false);
+      anim.SetBool("isRun", false);
+      playerBody.velocity = new Vector2(0, 0);
+      return;
     }
+    if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1))
+      && (grounded || extraJump > 0) && canJump && !jumping)
+    {
+      anim.SetBool("isJump", true);
+      Jump();
+    }
+    else if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.JoystickButton1))
+    {
+      anim.SetBool("isJump", false);
+    }
+    if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.JoystickButton5))
+        && canDash)
+    {
+      anim.SetBool("isDash", true);
+      Dash();
+    }
+
   }
 
   void FixedUpdate()
   {
+    if (dashing || talking)
+    {
+      anim.SetBool("isJump", false);
+      anim.SetBool("isDash", false);
+      anim.SetBool("isRun", false);
+      playerBody.velocity = new Vector2(0, 0);
+      return;
+    }
+
+    inputHorizontalDirection = Input.GetAxisRaw("Horizontal");
+    inputHorizontalDirection = (inputHorizontalDirection > 0) ?
+      (float)Math.Ceiling(inputHorizontalDirection) : (float)Math.Floor(inputHorizontalDirection);
+    Move();
+    CheckCanJump();
+    if ((Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.JoystickButton1)) && jumping && canJump)
+    {
+      Debug.Log("accelerating");
+      jumpSpeed = (jumpSpeed >= maxJumpSpeed) ? maxJumpSpeed :
+        jumpSpeed + playerBody.velocity.y + acceleration * Time.deltaTime;
+      playerBody.velocity = new Vector2(playerBody.velocity.x, jumpSpeed);
+    }
     grounded = groundCheck.IsTouchingLayers(groundLayer);
     if (grounded && canDoubleJump)
     {
@@ -118,14 +111,24 @@ public class PlayerController : MonoBehaviour
       facingRight = !facingRight;
       sprite.flipX = !sprite.flipX;
     }
-    // if (facingRight)
     anim.SetBool("isRun", true);
-    playerBody.velocity = new Vector2(inputHorizontalDirection * speed, playerBody.velocity.y);
+    playerBody.velocity = new Vector2(playerBody.velocity.x + inputHorizontalDirection * acceleration * Time.deltaTime,
+                                        playerBody.velocity.y);
+    if (playerBody.velocity.x > maxHorizontalSpeed)
+    {
+      playerBody.velocity = new Vector2(maxHorizontalSpeed, playerBody.velocity.y);
+    }
+    else if (playerBody.velocity.x < -maxHorizontalSpeed)
+    {
+      playerBody.velocity = new Vector2(-maxHorizontalSpeed, playerBody.velocity.y);
+    }
   }
 
   void Jump()
   {
-    playerBody.velocity = new Vector2(playerBody.velocity.x, jumpSpeed);
+
+    jumping = true;
+    playerBody.velocity = new Vector2(playerBody.velocity.x, playerBody.velocity.y + acceleration * Time.deltaTime);
     if (extraJump > 0)
     {
       extraJump--;
@@ -134,16 +137,21 @@ public class PlayerController : MonoBehaviour
 
   void Dash()
   {
+    if (inputHorizontalDirection == 0.0)
+    {
+      return;
+    }
+    var yVel = playerBody.velocity.y;
+    var gravity = playerBody.gravityScale;
     playerBody.velocity = new Vector2(inputHorizontalDirection * dashSpeed, 0);
-    yVel = playerBody.velocity.y;
     playerBody.gravityScale = 0;
-    StartCoroutine(DashTimer());
+    StartCoroutine(DashTimer(yVel, gravity, 0.2f));
     dashing = true;
   }
 
-  private IEnumerator DashTimer()
+  private IEnumerator DashTimer(float yVel, float gravity, float time)
   {
-    yield return new WaitForSeconds(.2f);
+    yield return new WaitForSeconds(time);
     playerBody.gravityScale = gravity;
     playerBody.velocity = new Vector2(playerBody.velocity.x, yVel);
     canDash = false;
@@ -158,6 +166,19 @@ public class PlayerController : MonoBehaviour
     canDash = true;
   }
 
+  private void CheckCanJump()
+  {
+    if (jumpSpeed >= maxJumpSpeed)
+    {
+      canJump = false;
+    }
+    if (!canJump && playerBody.velocity.y == 0f)
+    {
+      canJump = true;
+      jumping = false;
+    }
+  }
+
   public void UseItem(Items item)
   {
     if (itemsOwned.Contains(item))
@@ -166,10 +187,57 @@ public class PlayerController : MonoBehaviour
     }
   }
 
+  void Awake()
+  {
+    if (_instance == null)
+    {
+      _instance = this;
+      canDoubleJump = true;
+      canDash = true;
+      DontDestroyOnLoad(gameObject);
+    }
+    else
+    {
+      Destroy(gameObject);
+    }
+  }
+
+  void OnEnable()
+  {
+    SceneManager.sceneLoaded += OnSceneLoaded;
+  }
+
+  void OnDisable()
+  {
+    SceneManager.sceneLoaded -= OnSceneLoaded;
+  }
+
+  void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+  {
+    Debug.Log("Entering " + scene.name);
+    if (!scene.name.Equals("Menu"))
+    {
+      facingRight = false;
+      anim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
+      sprite = GameObject.FindGameObjectWithTag("Player").GetComponent<SpriteRenderer>();
+      groundLayer = LayerMask.GetMask("Ground");
+      playerBody = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
+      groundCheck = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<BoxCollider2D>();
+    }
+  }
 }
 
+public enum SpecialItems
+{
+  Crowbar,
+  Dynamite,
+  Sword
+}
 public enum Items
 {
-  Item1,
-  Item2
+  SilverKey,
+  Notebook,
+  Mushroom,
+  Bow,
+  Cucumber
 }
