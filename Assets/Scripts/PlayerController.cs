@@ -30,13 +30,11 @@ public class PlayerController : MonoBehaviour
   bool grounded;
   bool dashing;
 
-  bool canJump = true;
-  bool jumping;
+  public bool canJump = true;
+  public bool jumping;
   float jumpSpeed = 0f;
 
   float inputHorizontalDirection;
-
-
 
   void Update()
   {
@@ -126,7 +124,6 @@ public class PlayerController : MonoBehaviour
 
   void Jump()
   {
-
     jumping = true;
     playerBody.velocity = new Vector2(playerBody.velocity.x, playerBody.velocity.y + acceleration * Time.deltaTime);
     if (extraJump > 0)
