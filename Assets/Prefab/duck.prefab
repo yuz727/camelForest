@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Duck
       objectReference: {fileID: 0}
+    - target: {fileID: 1160356261127867848, guid: d3695dec2a0e7e149aaff44d58574cbb, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: ff139f54927a6a54da0e5df5b1a0f50a, type: 2}
     - target: {fileID: 7878350319992209165, guid: d3695dec2a0e7e149aaff44d58574cbb, type: 3}
       propertyPath: m_LocalScale.x
       value: 4
