@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class NPCOneEvent : MonoBehaviour
+public class GabeEvent : MonoBehaviour
 {
-
   public BoxCollider2D player;
   public BoxCollider2D NPC;
   public GameObject dialogueUI;
+  public GameObject Prompt;
   public DialogueManager manager;
   bool canTalk;
   bool isTalking;
@@ -19,6 +18,7 @@ public class NPCOneEvent : MonoBehaviour
   {
     if (Input.GetKeyDown(KeyCode.E) && canTalk)
     {
+      dialogueUI.SetActive(true);
       if (!isTalking)
       {
         dialogues = JsonUtility.FromJson<DialogueCollection>(npcDialogue.text).CollectionToQueue();
@@ -32,13 +32,13 @@ public class NPCOneEvent : MonoBehaviour
   {
     if (player.IsTouching(NPC))
     {
-      dialogueUI.SetActive(true);
       canTalk = true;
+      Prompt.SetActive(true);
     }
     else
     {
-      dialogueUI.SetActive(false);
       canTalk = false;
+      Prompt.SetActive(false);
     }
   }
 

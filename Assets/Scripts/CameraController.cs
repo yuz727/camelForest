@@ -6,9 +6,15 @@ public class CameraController : MonoBehaviour
 {
   public Transform playerLocation;
 
-  // Update is called once per frame
-  void Update()
+  public float translationFactor = 20;
+
+  void LateUpdate()
   {
-    this.transform.position = playerLocation.transform.position + new Vector3(0, 3, -10);
+    if (transform.position != playerLocation.position)
+    {
+      transform.position = new Vector3(transform.position.x + (playerLocation.position.x - transform.position.x) / translationFactor,
+                             3 + playerLocation.position.y + (playerLocation.position.y - transform.position.y) / translationFactor,
+                             -10);
+    }
   }
 }

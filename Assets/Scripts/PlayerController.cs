@@ -9,155 +9,167 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-  public static PlayerController _instance;
-  public Rigidbody2D playerBody;
-  public BoxCollider2D groundCheck;
-  public LayerMask groundLayer;
-  public Animator anim;
-  public SpriteRenderer sprite;
-  readonly float acceleration = 50f;
-  readonly float maxHorizontalSpeed = 5f;
-  readonly float jumpSpeed = 19f;
-  readonly float dashSpeed = 30f;
+  public static PlayerController S_Instance;
+  public Rigidbody2D PlayerBody;
+  public BoxCollider2D GroundCheck;
+  public LayerMask GroundLayer;
+  public Animator Anim;
+  public SpriteRenderer Sprite;
+  public SpecialItems SpecialItem;
+  public List<Items> ItemsOwned;
+  public bool CanDoubleJump;
+  public bool CanDash;
+  public bool Talking;
+  public bool Jumping;
+  public int ExtraJump;
 
-  public SpecialItems specialItem;
-  public List<Items> itemsOwned;
-  public bool canDoubleJump;
-  public bool canDash;
-  public bool talking;
-  public int extraJump;
-  bool facingRight;
-  bool grounded;
-  bool dashing;
-
-  public bool jumping;
-
-  float inputHorizontalDirection;
+  private readonly float _acceleration = 50f;
+  private readonly float _maxHorizontalSpeed = 5f;
+  private readonly float _jumpSpeed = 19f;
+  private readonly float _dashSpeed = 30f;
+  private bool _facingRight;
+  private bool _grounded;
+  private bool _dashing;
+  private float _inputHorizontalDirection;
 
   void Update()
   {
-    if (dashing || talking)
+    if (_dashing || Talking)
     {
-      anim.SetBool("isJump", false);
-      anim.SetBool("isDash", false);
-      anim.SetBool("isRun", false);
-      playerBody.velocity = new Vector2(0, 0);
+      Anim.SetBool("isJump", false);
+      Anim.SetBool("isDash", false);
+      Anim.SetBool("isRun", false);
+      PlayerBody.velocity = new Vector2(0, 0);
       return;
     }
+    _inputHorizontalDirection = Input.GetAxisRaw("Horizontal");
+    _inputHorizontalDirection = (_inputHorizontalDirection == 0f) ? 0 : (_inputHorizontalDirection > 0) ? 1f : -1f;
+    Move();
     if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1))
-      && (grounded || extraJump > 0))
+      && (_grounded || ExtraJump > 0))
     {
-      anim.SetBool("isJump", true);
       Jump();
     }
     else if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.JoystickButton1))
     {
-      anim.SetBool("isJump", false);
-      playerBody.velocity = new Vector2(playerBody.velocity.x, 0);
+      Anim.SetBool("isJump", false);
+      Jumping = false;
+      PlayerBody.velocity = new Vector2(PlayerBody.velocity.x, 0);
     }
     if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.JoystickButton5))
-        && canDash)
+        && CanDash)
     {
-      anim.SetBool("isDash", true);
       Dash();
     }
-
   }
 
   void FixedUpdate()
   {
-    if (dashing || talking)
+    if (_dashing || Talking)
     {
-      anim.SetBool("isJump", false);
-      anim.SetBool("isDash", false);
-      anim.SetBool("isRun", false);
-      playerBody.velocity = new Vector2(0, 0);
+      Anim.SetBool("isJump", false);
+      Anim.SetBool("isDash", false);
+      Anim.SetBool("isRun", false);
+      PlayerBody.velocity = new Vector2(0, 0);
       return;
     }
-
-    inputHorizontalDirection = Input.GetAxisRaw("Horizontal");
-    inputHorizontalDirection = (inputHorizontalDirection > 0) ?
-      (float)Math.Ceiling(inputHorizontalDirection) : (float)Math.Floor(inputHorizontalDirection);
-    Move();
-    grounded = groundCheck.IsTouchingLayers(groundLayer);
-    if (grounded && canDoubleJump)
+    _grounded = GroundCheck.IsTouchingLayers(GroundLayer);
+    if (_grounded && CanDoubleJump)
     {
-      extraJump = 1;
+      ExtraJump = 1;
     }
   }
 
 
   void Move()
   {
-    if (inputHorizontalDirection == 0.0f)
+    if (_inputHorizontalDirection == 0.0f)
     {
-      anim.SetBool("isRun", false);
-      playerBody.velocity = new Vector2(0, playerBody.velocity.y);
+      Anim.SetBool("isRun", false);
+      PlayerBody.velocity = new Vector2(0, PlayerBody.velocity.y);
       return;
     }
-    if ((facingRight && inputHorizontalDirection < 0.0f) || (!facingRight && inputHorizontalDirection > 0.0f))
+    if ((_facingRight && _inputHorizontalDirection < 0.0f) || (!_facingRight && _inputHorizontalDirection > 0.0f))
     {
-      facingRight = !facingRight;
-      sprite.flipX = !sprite.flipX;
+      _facingRight = !_facingRight;
+      Sprite.flipX = !Sprite.flipX;
     }
-    anim.SetBool("isRun", true);
-    playerBody.velocity = new Vector2(playerBody.velocity.x + inputHorizontalDirection * acceleration * Time.deltaTime,
-                                        playerBody.velocity.y);
-    if (playerBody.velocity.x > maxHorizontalSpeed)
+    if (!Jumping)
     {
-      playerBody.velocity = new Vector2(maxHorizontalSpeed, playerBody.velocity.y);
+      Anim.SetBool("isRun", true);
     }
-    else if (playerBody.velocity.x < -maxHorizontalSpeed)
+    PlayerBody.velocity = new Vector2(PlayerBody.velocity.x + _inputHorizontalDirection * _acceleration * Time.deltaTime,
+                                        PlayerBody.velocity.y);
+    // Speed Cap
+    if (PlayerBody.velocity.x > _maxHorizontalSpeed)
     {
-      playerBody.velocity = new Vector2(-maxHorizontalSpeed, playerBody.velocity.y);
+      PlayerBody.velocity = new Vector2(_maxHorizontalSpeed, PlayerBody.velocity.y);
+    }
+    else if (PlayerBody.velocity.x < -_maxHorizontalSpeed)
+    {
+      PlayerBody.velocity = new Vector2(-_maxHorizontalSpeed, PlayerBody.velocity.y);
     }
   }
 
   void Jump()
   {
-    playerBody.velocity = new Vector2(playerBody.velocity.x, jumpSpeed);
-    if (extraJump > 0)
+    Anim.SetBool("isJump", true);
+    Jumping = true;
+    PlayerBody.velocity = new Vector2(PlayerBody.velocity.x, _jumpSpeed);
+    if (ExtraJump > 0)
     {
-      extraJump--;
+      ExtraJump--;
     }
   }
 
   void Dash()
   {
-    if (inputHorizontalDirection == 0.0)
+    if (_inputHorizontalDirection == 0.0)
     {
       return;
     }
-    var yVel = playerBody.velocity.y;
-    var gravity = playerBody.gravityScale;
-    playerBody.velocity = new Vector2(inputHorizontalDirection * dashSpeed, 0);
-    playerBody.gravityScale = 0;
+    Anim.SetBool("isDash", true);
+    var yVel = PlayerBody.velocity.y;
+    var gravity = PlayerBody.gravityScale;
+    PlayerBody.velocity = new Vector2(_inputHorizontalDirection * _dashSpeed, 0);
+    PlayerBody.gravityScale = 0;
     StartCoroutine(DashTimer(yVel, gravity, 0.2f));
-    dashing = true;
+    _dashing = true;
   }
 
   private IEnumerator DashTimer(float yVel, float gravity, float time)
   {
     yield return new WaitForSeconds(time);
-    playerBody.gravityScale = gravity;
-    playerBody.velocity = new Vector2(playerBody.velocity.x, yVel);
-    canDash = false;
-    dashing = false;
-    anim.SetBool("isDash", false);
+    PlayerBody.gravityScale = gravity;
+    PlayerBody.velocity = new Vector2(PlayerBody.velocity.x, yVel);
+    CanDash = false;
+    _dashing = false;
+    Anim.SetBool("isDash", false);
     StartCoroutine(DashCooldown());
   }
 
   private IEnumerator DashCooldown()
   {
     yield return new WaitForSeconds(.5f);
-    canDash = true;
+    CanDash = true;
   }
 
+  public void AddItem(Items item)
+  {
+    if (!ItemsOwned.Contains(item))
+    {
+      ItemsOwned.Add(item);
+    }
+    else
+    {
+      Debug.Log("Item Owned Already");
+    }
+  }
   public void UseItem(Items item)
   {
-    if (itemsOwned.Contains(item))
+    if (ItemsOwned.Contains(item))
     {
-      itemsOwned.Remove(item);
+      ItemsOwned.Remove(item);
     }
     else
     {
@@ -167,11 +179,11 @@ public class PlayerController : MonoBehaviour
 
   void Awake()
   {
-    if (_instance == null)
+    if (S_Instance == null)
     {
-      _instance = this;
-      canDoubleJump = false;
-      canDash = false;
+      S_Instance = this;
+      CanDoubleJump = false;
+      CanDash = false;
       DontDestroyOnLoad(gameObject);
     }
     else
@@ -195,18 +207,19 @@ public class PlayerController : MonoBehaviour
     Debug.Log("Entering " + scene.name);
     if (!scene.name.Equals("Menu"))
     {
-      facingRight = false;
-      anim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
-      sprite = GameObject.FindGameObjectWithTag("Player").GetComponent<SpriteRenderer>();
-      groundLayer = LayerMask.GetMask("Ground");
-      playerBody = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
-      groundCheck = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<BoxCollider2D>();
+      _facingRight = false;
+      Anim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
+      Sprite = GameObject.FindGameObjectWithTag("Player").GetComponent<SpriteRenderer>();
+      GroundLayer = LayerMask.GetMask("Ground");
+      PlayerBody = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
+      GroundCheck = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<BoxCollider2D>();
     }
   }
 }
 
 public enum SpecialItems
 {
+  None,
   Crowbar,
   Dynamite,
   Sword

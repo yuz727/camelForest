@@ -4,58 +4,66 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public float moveSpeed = 0.1f;
-    public float moveDistance = 1f;
-    public float idelTime = 4f;
-    public float h=-1;
-    float distance = 0;
-    float time = 0;
-    bool isDead = false;
-    Animator anim;
-    SpriteRenderer sprt;
-    // Start is called before the first frame update
-    void Start()
+  public float moveSpeed = 0.1f;
+  public float moveDistance = 1f;
+  public float idelTime = 4f;
+  public float h = -1;
+  float distance = 0;
+  float time = 0;
+  bool isDead = false;
+  Animator anim;
+  SpriteRenderer sprt;
+  // Start is called before the first frame update
+  void Start()
+  {
+    anim = transform.GetComponent<Animator>();
+    sprt = transform.GetComponent<SpriteRenderer>();
+  }
+
+  // Update is called once per frame
+  void Update()
+  {
+    if (isDead)
     {
-        anim =transform.GetComponent<Animator>();
-        sprt = transform.GetComponent<SpriteRenderer>();
+      return;
+    }
+    if (distance > moveDistance)
+    {
+      anim.SetBool("isRun", false);
+      time += Time.deltaTime;
+      if (time > idelTime)
+      {
+        h = -h;
+        distance = 0;
+        time = 0;
+        if (h > 0)
+        {
+          sprt.flipX = true;
+        }
+        else if (h < 0)
+        {
+          sprt.flipX = false;
+        }
+      }
+    }
+    else
+    {
+      anim.SetBool("isRun", true);
+      float speed = moveSpeed * Time.deltaTime;
+      distance += speed;
+      transform.Translate(new Vector2(h * speed, 0));
     }
 
-    // Update is called once per frame
-    void Update()
+  }
+  public void Die()
+  {
+    if (isDead)
     {
-        if(isDead){
-            return;
-        }
-        if(distance>moveDistance){
-            anim.SetBool("isRun",false);
-            time += Time.deltaTime;
-            if(time>idelTime){
-                h=-h;
-                distance = 0;
-                time=0;
-                if(h>0){
-                    sprt.flipX=true;
-                }
-                else if(h<0){
-                    sprt.flipX=false;
-                }
-            }
-        }
-        else{
-            anim.SetBool("isRun",true);
-            float speed =moveSpeed*Time.deltaTime;
-            distance+=speed;
-            transform.Translate(new Vector2(h*speed,0));
-        }
-        
+      return;
     }
-    public void Die(){
-        if(isDead){
-            return;
-        }
-        isDead =true;
-        Debug.Log("Enemy Die.");
-        anim.SetBool("isDie",true);
-        Destroy(gameObject,0.3f);
-    }
+    isDead = true;
+    Debug.Log("Enemy Die.");
+    anim.SetBool("isDie", true);
+    Destroy(gameObject, 0.3f);
+  }
 }
