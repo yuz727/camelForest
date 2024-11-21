@@ -6,6 +6,7 @@ TagManager:
   tags:
   - NPC
   - Prompt
+  - DialogueUI
   - Spike
   - Otto
   - Duck

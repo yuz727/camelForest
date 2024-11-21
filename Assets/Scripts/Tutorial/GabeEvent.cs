@@ -4,25 +4,26 @@ using UnityEngine;
 
 public class GabeEvent : MonoBehaviour
 {
-  public BoxCollider2D player;
+  public BoxCollider2D Player;
   public BoxCollider2D NPC;
-  public GameObject dialogueUI;
+  public GameObject DialogueUI;
   public GameObject Prompt;
-  public DialogueManager manager;
-  bool canTalk;
-  bool isTalking;
-  public TextAsset npcDialogue;
-  public Queue<Dialogue> dialogues;
+  public DialogueManager Manager;
+  public TextAsset NpcDialogue;
+  public Queue<Dialogue> Dialogues;
+
+  private bool _canTalk;
+  private bool _isTalking;
 
   void Update()
   {
-    if (Input.GetKeyDown(KeyCode.E) && canTalk)
+    if (Input.GetKeyDown(KeyCode.E) && _canTalk)
     {
-      dialogueUI.SetActive(true);
-      if (!isTalking)
+      DialogueUI.SetActive(true);
+      if (!_isTalking)
       {
-        dialogues = JsonUtility.FromJson<DialogueCollection>(npcDialogue.text).CollectionToQueue();
-        isTalking = true;
+        Dialogues = JsonUtility.FromJson<DialogueCollection>(NpcDialogue.text).CollectionToQueue();
+        _isTalking = true;
       }
       NextTrigger();
     }
@@ -30,27 +31,27 @@ public class GabeEvent : MonoBehaviour
 
   void FixedUpdate()
   {
-    if (player.IsTouching(NPC))
+    if (Player.IsTouching(NPC))
     {
-      canTalk = true;
+      _canTalk = true;
       Prompt.SetActive(true);
     }
     else
     {
-      canTalk = false;
+      _canTalk = false;
       Prompt.SetActive(false);
     }
   }
 
   void NextTrigger()
   {
-    if (dialogues.Count > 0)
+    if (Dialogues.Count > 0)
     {
-      FindObjectOfType<DialogueTrigger>().Dialogue = dialogues.Dequeue();
+      FindObjectOfType<DialogueTrigger>().Dialogue = Dialogues.Dequeue();
       FindObjectOfType<DialogueTrigger>().TriggerDialogue();
       return;
     }
-    dialogueUI.SetActive(false);
-    isTalking = false;
+    DialogueUI.SetActive(false);
+    _canTalk = false;
   }
 }

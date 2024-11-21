@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
   public Rigidbody2D PlayerBody;
   public BoxCollider2D GroundCheck;
   public LayerMask GroundLayer;
+  public GameObject DialogueUI;
   public Animator Anim;
   public SpriteRenderer Sprite;
   public SpecialItems SpecialItem;
@@ -156,15 +157,26 @@ public class PlayerController : MonoBehaviour
 
   public void AddItem(Items item)
   {
-    if (!ItemsOwned.Contains(item))
+    if (!ItemsOwned.Contains(item) && ItemsOwned.Count < 3)
     {
+      DialogueUI.SetActive(true);
       ItemsOwned.Add(item);
+      FindObjectOfType<DialogueTrigger>().Dialogue = new Dialogue("", new string[] { $"Obtained the {item}!" });
+      FindObjectOfType<DialogueTrigger>().TriggerDialogue();
+      StartCoroutine(DialogueUITimer());
     }
     else
     {
       Debug.Log("Item Owned Already");
     }
   }
+
+  private IEnumerator DialogueUITimer()
+  {
+    yield return new WaitForSeconds(2f);
+    DialogueUI.SetActive(false);
+  }
+
   public void UseItem(Items item)
   {
     if (ItemsOwned.Contains(item))
@@ -208,6 +220,7 @@ public class PlayerController : MonoBehaviour
     if (!scene.name.Equals("Menu"))
     {
       _facingRight = false;
+      DialogueUI = GameObject.FindGameObjectWithTag("DialogueUI");
       Anim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
       Sprite = GameObject.FindGameObjectWithTag("Player").GetComponent<SpriteRenderer>();
       GroundLayer = LayerMask.GetMask("Ground");
@@ -226,7 +239,7 @@ public enum SpecialItems
 }
 public enum Items
 {
-  SilverKey,
+  Key,
   Notebook,
   Mushroom,
   Bow,
