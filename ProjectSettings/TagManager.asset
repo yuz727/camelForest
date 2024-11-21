@@ -6,6 +6,9 @@ TagManager:
   tags:
   - NPC
   - Prompt
+  - Spike
+  - Otto
+  - Duck
   layers:
   - Default
   - TransparentFX
