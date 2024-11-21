@@ -10,6 +10,7 @@ TagManager:
   - Spike
   - Otto
   - Duck
+  - GroundCheck
   layers:
   - Default
   - TransparentFX
