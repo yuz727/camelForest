@@ -13,9 +13,17 @@ PrefabInstance:
       value: slime
       objectReference: {fileID: 0}
     - target: {fileID: -2253911629886400664, guid: 982cbdb8cfc29804f8fc2647fb2110c8, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -2253911629886400664, guid: 982cbdb8cfc29804f8fc2647fb2110c8, type: 3}
       propertyPath: m_TagString
       value: Otto
       objectReference: {fileID: 0}
+    - target: {fileID: 1160356261127867848, guid: 982cbdb8cfc29804f8fc2647fb2110c8, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 76c81978d8e089846813c73c2684f6fd, type: 2}
     - target: {fileID: 7878350319992209165, guid: 982cbdb8cfc29804f8fc2647fb2110c8, type: 3}
       propertyPath: m_LocalScale.x
       value: 2
@@ -98,7 +106,7 @@ PolygonCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
