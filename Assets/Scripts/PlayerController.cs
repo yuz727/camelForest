@@ -74,6 +74,10 @@ public class PlayerController : MonoBehaviour
       return;
     }
     _grounded = GroundCheck.IsTouchingLayers(GroundLayer);
+    if (_grounded)
+    {
+      Anim.SetBool("isJump", false);
+    }
     if (_grounded && CanDoubleJump)
     {
       ExtraJump = 1;
@@ -110,7 +114,12 @@ public class PlayerController : MonoBehaviour
       PlayerBody.velocity = new Vector2(-_maxHorizontalSpeed, PlayerBody.velocity.y);
     }
   }
-
+  public void DuckJump(float speed)
+  {
+    Anim.SetBool("isJump", true);
+    Jumping = true;
+    PlayerBody.velocity = new Vector2(PlayerBody.velocity.x, speed);
+  }
   void Jump()
   {
     Anim.SetBool("isJump", true);
