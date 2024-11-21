@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
   public SpriteRenderer sprite;
   readonly float acceleration = 50f;
   readonly float maxHorizontalSpeed = 5f;
-  readonly float maxJumpSpeed = 15f;
+  readonly float jumpSpeed = 19f;
   readonly float dashSpeed = 30f;
 
   public SpecialItems specialItem;
@@ -30,9 +30,7 @@ public class PlayerController : MonoBehaviour
   bool grounded;
   bool dashing;
 
-  public bool canJump = true;
   public bool jumping;
-  float jumpSpeed = 0f;
 
   float inputHorizontalDirection;
 
@@ -47,7 +45,7 @@ public class PlayerController : MonoBehaviour
       return;
     }
     if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1))
-      && (grounded || extraJump > 0) && canJump && !jumping)
+      && (grounded || extraJump > 0))
     {
       anim.SetBool("isJump", true);
       Jump();
@@ -55,6 +53,7 @@ public class PlayerController : MonoBehaviour
     else if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.JoystickButton1))
     {
       anim.SetBool("isJump", false);
+      playerBody.velocity = new Vector2(playerBody.velocity.x, 0);
     }
     if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.JoystickButton5))
         && canDash)
@@ -80,14 +79,6 @@ public class PlayerController : MonoBehaviour
     inputHorizontalDirection = (inputHorizontalDirection > 0) ?
       (float)Math.Ceiling(inputHorizontalDirection) : (float)Math.Floor(inputHorizontalDirection);
     Move();
-    CheckCanJump();
-    if ((Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.JoystickButton1)) && jumping && canJump)
-    {
-      Debug.Log("accelerating");
-      jumpSpeed = (jumpSpeed >= maxJumpSpeed) ? maxJumpSpeed :
-        jumpSpeed + playerBody.velocity.y + acceleration * Time.deltaTime;
-      playerBody.velocity = new Vector2(playerBody.velocity.x, jumpSpeed);
-    }
     grounded = groundCheck.IsTouchingLayers(groundLayer);
     if (grounded && canDoubleJump)
     {
@@ -124,8 +115,7 @@ public class PlayerController : MonoBehaviour
 
   void Jump()
   {
-    jumping = true;
-    playerBody.velocity = new Vector2(playerBody.velocity.x, playerBody.velocity.y + acceleration * Time.deltaTime);
+    playerBody.velocity = new Vector2(playerBody.velocity.x, jumpSpeed);
     if (extraJump > 0)
     {
       extraJump--;
@@ -163,24 +153,15 @@ public class PlayerController : MonoBehaviour
     canDash = true;
   }
 
-  private void CheckCanJump()
-  {
-    if (jumpSpeed >= maxJumpSpeed)
-    {
-      canJump = false;
-    }
-    if (!canJump && playerBody.velocity.y == 0f)
-    {
-      canJump = true;
-      jumping = false;
-    }
-  }
-
   public void UseItem(Items item)
   {
     if (itemsOwned.Contains(item))
     {
       itemsOwned.Remove(item);
+    }
+    else
+    {
+      Debug.Log("Item Don't Exist");
     }
   }
 

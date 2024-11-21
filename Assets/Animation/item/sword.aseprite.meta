@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f54da87c5caf7ba4499b6bf2e8a321dc
+guid: 8b75514922d28b84c8919825cd508bd0
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -121,18 +121,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Himmel
+  - name: sword
     originalName: 
-    pivot: {x: 0.5714286, y: 0}
+    pivot: {x: 0.5555556, y: -0.032258064}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 28
-      height: 61
-    spriteID: a39d4acd86608314685a07638a1d146c
+      width: 9
+      height: 31
+    spriteID: fd38bbc2ada25fc4ba5ec562e60a3f94
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -141,53 +141,24 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  - name: Frame_2
-    originalName: 
-    pivot: {x: 0.5555556, y: 0}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 40
-      y: 4
-      width: 27
-      height: 61
-    spriteID: 2f386a2cb01afe34eb6acf5a0d70e4cf
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 40, y: 4}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -185446514
-    name: Himmel
+    guid: -44376519
+    name: sword
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Frame_0
+    - name: sword
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 16
-        y: 0
-        width: 28
-        height: 61
-      spriteId: a39d4acd86608314685a07638a1d146c
-    - name: Frame_2
-      frameIndex: 2
-      additiveSortOrder: 0
-      cellRect:
-        x: 17
-        y: 0
-        width: 27
-        height: 61
-      spriteId: 2f386a2cb01afe34eb6acf5a0d70e4cf
+        x: 11
+        y: 1
+        width: 9
+        height: 31
+      spriteId: fd38bbc2ada25fc4ba5ec562e60a3f94
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -206,4 +177,4 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 64, y: 64}
+  canvasSize: {x: 32, y: 32}
