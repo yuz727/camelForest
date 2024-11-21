@@ -170,8 +170,8 @@ public class PlayerController : MonoBehaviour
     if (_instance == null)
     {
       _instance = this;
-      canDoubleJump = true;
-      canDash = true;
+      canDoubleJump = false;
+      canDash = false;
       DontDestroyOnLoad(gameObject);
     }
     else
