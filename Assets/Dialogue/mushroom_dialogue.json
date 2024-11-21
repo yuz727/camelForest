@@ -1,0 +1,20 @@
+{
+  "Dialogues": [
+    {
+      "NPCName": "Shroom",
+      "Sentences": [
+        "Yo!",
+        "The green shroom season is here Wood!",
+        "Go grab some from by farm there!"
+      ]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": ["I don't think thats good..."]
+    },
+    {
+      "NPCName": "Shroom",
+      "Sentences": ["Don't Worry!", "It's Free!"]
+    }
+  ]
+}

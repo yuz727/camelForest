@@ -4,15 +4,41 @@ using UnityEngine;
 
 public class ItemEvent : MonoBehaviour
 {
+  public static GameObject S_Key;
+  public static GameObject S_Mushroom;
+  public static GameObject S_Bow;
   public GameObject ThisItem;
   public BoxCollider2D Item;
   public LayerMask player;
+
+  void Start()
+  {
+    S_Key = GameObject.Find("Key");
+    S_Mushroom = GameObject.Find("Mushroom");
+    S_Bow = GameObject.Find("Bow");
+  }
+
   void FixedUpdate()
   {
     if (Item.IsTouchingLayers(player))
     {
-      FindObjectOfType<PlayerController>().AddItem(Items.Bow);
-      ThisItem.SetActive(false);
+      switch (ThisItem)
+      {
+        case var ThisItem when ThisItem == S_Key:
+          FindObjectOfType<PlayerController>().AddItem(Items.Key);
+          ThisItem.SetActive(false);
+          break;
+        case var ThisItem when ThisItem == S_Mushroom:
+          FindObjectOfType<PlayerController>().AddItem(Items.Mushroom);
+          ThisItem.SetActive(false);
+          break;
+        case var ThisItem when ThisItem == S_Bow:
+          FindObjectOfType<PlayerController>().AddItem(Items.Bow);
+          ThisItem.SetActive(false);
+          break;
+        default:
+          break;
+      }
     }
   }
 }

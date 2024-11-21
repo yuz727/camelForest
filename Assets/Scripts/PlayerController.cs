@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
   public Rigidbody2D PlayerBody;
   public BoxCollider2D GroundCheck;
   public LayerMask GroundLayer;
-  public GameObject DialogueUI;
   public Animator Anim;
   public SpriteRenderer Sprite;
   public SpecialItems SpecialItem;
@@ -159,9 +158,9 @@ public class PlayerController : MonoBehaviour
   {
     if (!ItemsOwned.Contains(item) && ItemsOwned.Count < 3)
     {
-      DialogueUI.SetActive(true);
+      FindObjectOfType<CanvasController>().OpenDialogueBox();
       ItemsOwned.Add(item);
-      FindObjectOfType<DialogueTrigger>().Dialogue = new Dialogue("", new string[] { $"Obtained the {item}!" });
+      FindObjectOfType<DialogueTrigger>().Dialogue = new() { NPCName = "", Sentences = new string[] { $"Obtained the {item}!" } };
       FindObjectOfType<DialogueTrigger>().TriggerDialogue();
       StartCoroutine(DialogueUITimer());
     }
@@ -174,7 +173,7 @@ public class PlayerController : MonoBehaviour
   private IEnumerator DialogueUITimer()
   {
     yield return new WaitForSeconds(2f);
-    DialogueUI.SetActive(false);
+    FindObjectOfType<CanvasController>().CloseDialogueBox();
   }
 
   public void UseItem(Items item)
@@ -220,7 +219,7 @@ public class PlayerController : MonoBehaviour
     if (!scene.name.Equals("Menu"))
     {
       _facingRight = false;
-      DialogueUI = GameObject.FindGameObjectWithTag("DialogueUI");
+
       Anim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
       Sprite = GameObject.FindGameObjectWithTag("Player").GetComponent<SpriteRenderer>();
       GroundLayer = LayerMask.GetMask("Ground");

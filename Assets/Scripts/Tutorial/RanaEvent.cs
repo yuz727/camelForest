@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public class RanaEvent : MonoBehaviour
 {
+  public Transform RanaLocation;
+  public BoxCollider2D UpTrigger;
+  public BoxCollider2D DownTrigger;
   public BoxCollider2D Player;
   public BoxCollider2D NPC;
-  public GameObject DialogueUI;
   public GameObject Prompt;
   public DialogueManager Manager;
   public TextAsset NpcDialogue;
@@ -19,10 +22,10 @@ public class RanaEvent : MonoBehaviour
   {
     if (Input.GetKeyDown(KeyCode.E) && _canTalk)
     {
-      DialogueUI.SetActive(true);
+      FindObjectOfType<CanvasController>().OpenDialogueBox();
       if (!_isTalking)
       {
-        Dialogues = JsonUtility.FromJson<DialogueCollection>(NpcDialogue.text).CollectionToQueue();
+        Dialogues = JsonConvert.DeserializeObject<DialogueCollection>(NpcDialogue.text).CollectionToQueue();
         _isTalking = true;
       }
       NextTrigger();
@@ -41,6 +44,15 @@ public class RanaEvent : MonoBehaviour
       _canTalk = false;
       Prompt.SetActive(false);
     }
+    if (Player.IsTouching(UpTrigger))
+    {
+      RanaLocation.position = new Vector3(84.56f, 26.48f, -2);
+    }
+    if (Player.IsTouching(DownTrigger))
+    {
+      RanaLocation.position = new Vector3(36.96f, -3.15f, -2);
+    }
+
   }
 
   void NextTrigger()
@@ -51,7 +63,7 @@ public class RanaEvent : MonoBehaviour
       FindObjectOfType<DialogueTrigger>().TriggerDialogue();
       return;
     }
-    DialogueUI.SetActive(false);
-    _canTalk = false;
+    FindObjectOfType<CanvasController>().CloseDialogueBox();
+    _isTalking = false;
   }
 }

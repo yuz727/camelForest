@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Newtonsoft.Json;
 public class AnonEvent : MonoBehaviour
 {
   public BoxCollider2D Player;
   public BoxCollider2D NPC;
-  public GameObject DialogueUI;
   public GameObject Prompt;
   public DialogueManager Manager;
   public TextAsset NpcDialogue;
@@ -19,10 +18,10 @@ public class AnonEvent : MonoBehaviour
   {
     if (Input.GetKeyDown(KeyCode.E) && _canTalk)
     {
-      DialogueUI.SetActive(true);
+      FindObjectOfType<CanvasController>().OpenDialogueBox();
       if (!_isTalking)
       {
-        Dialogues = JsonUtility.FromJson<DialogueCollection>(NpcDialogue.text).CollectionToQueue();
+        Dialogues = JsonConvert.DeserializeObject<DialogueCollection>(NpcDialogue.text).CollectionToQueue();
         _isTalking = true;
       }
       NextTrigger();
@@ -51,7 +50,7 @@ public class AnonEvent : MonoBehaviour
       FindObjectOfType<DialogueTrigger>().TriggerDialogue();
       return;
     }
-    DialogueUI.SetActive(false);
-    _canTalk = false;
+    FindObjectOfType<CanvasController>().CloseDialogueBox();
+    _isTalking = false;
   }
 }

@@ -16,4 +16,5 @@ public class DialogueCollection
     }
     return newQueue;
   }
+
 }

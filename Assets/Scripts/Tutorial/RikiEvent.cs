@@ -22,7 +22,7 @@ public class RikiEvent : MonoBehaviour
       DialogueUI.SetActive(true);
       if (!_isTalking)
       {
-        Dialogues = JsonUtility.FromJson<DialogueCollection>(NpcDialogue.text).CollectionToQueue();
+        // Dialogues = JsonUtility.FromJson<DialogueCollection>(NpcDialogue.text).CollectionToQueue();
         _isTalking = true;
       }
       NextTrigger();
