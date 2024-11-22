@@ -2,7 +2,27 @@ fileFormatVersion: 2
 guid: 3f9887953ca29664294d9873a33c88b5
 ScriptedImporter:
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: dash
+    second: {fileID: 7400000, guid: 2c5e720bee9ccce49a0a77ce87ef3393, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: idel
+    second: {fileID: 7400000, guid: f7b61984ab428a547a246b047e1dce99, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: jump
+    second: {fileID: 7400000, guid: ff4d7ee3de07e9c4a975d0f5f35048ff, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: run
+    second: {fileID: 7400000, guid: 778b2ee53d0a871479e103b32be3c720, type: 2}
   serializedVersion: 2
   userData: 
   assetBundleName: 
@@ -97,7 +117,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638667841192160344
+  platformSettingsDirtyTick: 638678116512520584
   textureAssetName: 
   singleSpriteImportData:
   - name: 

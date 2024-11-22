@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
 
   private readonly float _acceleration = 50f;
   private readonly float _maxHorizontalSpeed = 5f;
-  private readonly float _jumpSpeed = 19f;
+  private readonly float _jumpSpeed = 20f;
   private readonly float _dashSpeed = 30f;
   private bool _facingRight;
   private bool _grounded;
