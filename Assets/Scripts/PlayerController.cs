@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
   public bool Talking;
   public bool Jumping;
   public int ExtraJump;
-
+  public readonly Vector3 RespawnPoint = new Vector3(43f, -4f, -5f);
   private readonly float _acceleration = 50f;
   private readonly float _maxHorizontalSpeed = 5f;
   private readonly float _jumpSpeed = 20f;
@@ -45,6 +45,10 @@ public class PlayerController : MonoBehaviour
     _inputHorizontalDirection = Input.GetAxisRaw("Horizontal");
     _inputHorizontalDirection = (_inputHorizontalDirection == 0f) ? 0 : (_inputHorizontalDirection > 0) ? 1f : -1f;
     Move();
+    if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.JoystickButton3))
+    {
+      Jump();
+    }
     if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1))
       && (_grounded || ExtraJump > 0))
     {
@@ -163,6 +167,15 @@ public class PlayerController : MonoBehaviour
     CanDash = true;
   }
 
+  public void KillPlayer()
+  {
+    Respawn();
+  }
+
+  private void Respawn()
+  {
+    PlayerBody.position = RespawnPoint;
+  }
   public void AddItem(Items item)
   {
     if (!ItemsOwned.Contains(item) && ItemsOwned.Count < 3)

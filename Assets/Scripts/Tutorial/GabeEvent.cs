@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GabeEvent : MonoBehaviour
 {
-  public BoxCollider2D Player;
+  public CapsuleCollider2D Player;
   public BoxCollider2D NPC;
   public GameObject DialogueUI;
   public GameObject Prompt;
@@ -17,7 +17,7 @@ public class GabeEvent : MonoBehaviour
 
   void Update()
   {
-    if (Input.GetKeyDown(KeyCode.E) && _canTalk)
+    if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton2)) && _canTalk)
     {
       DialogueUI.SetActive(true);
       if (!_isTalking)

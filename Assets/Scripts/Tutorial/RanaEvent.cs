@@ -3,67 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 
-public class RanaEvent : MonoBehaviour
+public class RanaEvent : NPCController
 {
   public Transform RanaLocation;
   public BoxCollider2D UpTrigger;
   public BoxCollider2D DownTrigger;
-  public BoxCollider2D Player;
-  public BoxCollider2D NPC;
-  public GameObject Prompt;
-  public DialogueManager Manager;
-  public TextAsset NpcDialogue;
-  public Queue<Dialogue> Dialogues;
-
   private bool _canTalk;
   private bool _isTalking;
 
   void Update()
   {
-    if (Input.GetKeyDown(KeyCode.E) && _canTalk)
+    if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton0)) && _canTalk)
     {
       FindObjectOfType<CanvasController>().OpenDialogueBox();
       if (!_isTalking)
       {
-        Dialogues = JsonConvert.DeserializeObject<DialogueCollection>(NpcDialogue.text).CollectionToQueue();
+        Dialogues = JsonConvert.DeserializeObject<DialogueCollection>(NPCDialogue.text).CollectionToQueue();
         _isTalking = true;
+        FindObjectOfType<PlayerController>().Talking = true;
       }
-      NextTrigger();
+      _isTalking = DisplayDialogue();
     }
   }
 
   void FixedUpdate()
   {
-    if (Player.IsTouching(NPC))
-    {
-      _canTalk = true;
-      Prompt.SetActive(true);
-    }
-    else
-    {
-      _canTalk = false;
-      Prompt.SetActive(false);
-    }
-    if (Player.IsTouching(UpTrigger))
+    _canTalk = CheckPlayerOverlap();
+    if (UpTrigger.IsTouchingLayers(Player))
     {
       RanaLocation.position = new Vector3(84.56f, 26.48f, -2);
     }
-    if (Player.IsTouching(DownTrigger))
+    if (DownTrigger.IsTouchingLayers(Player))
     {
       RanaLocation.position = new Vector3(36.96f, -3.15f, -2);
     }
 
-  }
-
-  void NextTrigger()
-  {
-    if (Dialogues.Count > 0)
-    {
-      FindObjectOfType<DialogueTrigger>().Dialogue = Dialogues.Dequeue();
-      FindObjectOfType<DialogueTrigger>().TriggerDialogue();
-      return;
-    }
-    FindObjectOfType<CanvasController>().CloseDialogueBox();
-    _isTalking = false;
   }
 }

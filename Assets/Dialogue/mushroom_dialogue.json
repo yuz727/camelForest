@@ -1,11 +1,11 @@
 {
   "Dialogues": [
     {
-      "NPCName": "Shroom",
+      "NPCName": "ShroomTrainer",
       "Sentences": [
         "Yo!",
         "The green shroom season is here Wood!",
-        "Go grab some from by farm there!"
+        "Go grab some from by farm over there!"
       ]
     },
     {
@@ -13,8 +13,8 @@
       "Sentences": ["I don't think thats good..."]
     },
     {
-      "NPCName": "Shroom",
-      "Sentences": ["Don't Worry!", "It's Free!"]
+      "NPCName": "ShroomTrainer",
+      "Sentences": ["Don't Worry!", "It's Free!", "Also 100% Organic"]
     }
   ]
 }

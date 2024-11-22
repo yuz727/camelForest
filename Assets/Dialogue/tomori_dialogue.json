@@ -1,0 +1,20 @@
+{
+  "Dialogues": [
+    {
+      "NPCName": "GOAT",
+      "Sentences": ["Wood, are you going to get Camel back to the village?"]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": ["(Nods.)"]
+    },
+    {
+      "NPCName": "GOAT",
+      "Sentences": [
+        "Here, take this.",
+        "Give this to Camel when you see her.",
+        "She'll understand."
+      ]
+    }
+  ]
+}

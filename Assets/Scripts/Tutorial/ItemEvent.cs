@@ -29,8 +29,11 @@ public class ItemEvent : MonoBehaviour
           ThisItem.SetActive(false);
           break;
         case var ThisItem when ThisItem == S_Mushroom:
-          FindObjectOfType<PlayerController>().AddItem(Items.Mushroom);
-          ThisItem.SetActive(false);
+          if (FindObjectOfType<ShroomEvent>().StartRepeat)
+          {
+            FindObjectOfType<PlayerController>().AddItem(Items.Mushroom);
+            ThisItem.SetActive(false);
+          }
           break;
         case var ThisItem when ThisItem == S_Bow:
           FindObjectOfType<PlayerController>().AddItem(Items.Bow);

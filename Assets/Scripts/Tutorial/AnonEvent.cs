@@ -4,7 +4,7 @@ using UnityEngine;
 using Newtonsoft.Json;
 public class AnonEvent : MonoBehaviour
 {
-  public BoxCollider2D Player;
+  public LayerMask Player;
   public BoxCollider2D NPC;
   public GameObject Prompt;
   public DialogueManager Manager;
@@ -16,13 +16,14 @@ public class AnonEvent : MonoBehaviour
 
   void Update()
   {
-    if (Input.GetKeyDown(KeyCode.E) && _canTalk)
+    if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton0)) && _canTalk)
     {
       FindObjectOfType<CanvasController>().OpenDialogueBox();
       if (!_isTalking)
       {
         Dialogues = JsonConvert.DeserializeObject<DialogueCollection>(NpcDialogue.text).CollectionToQueue();
         _isTalking = true;
+        FindObjectOfType<PlayerController>().Talking = true;
       }
       NextTrigger();
     }
@@ -30,7 +31,7 @@ public class AnonEvent : MonoBehaviour
 
   void FixedUpdate()
   {
-    if (Player.IsTouching(NPC))
+    if (NPC.IsTouchingLayers(Player))
     {
       _canTalk = true;
       Prompt.SetActive(true);
@@ -51,6 +52,7 @@ public class AnonEvent : MonoBehaviour
       return;
     }
     FindObjectOfType<CanvasController>().CloseDialogueBox();
+    FindObjectOfType<PlayerController>().Talking = false;
     _isTalking = false;
   }
 }
