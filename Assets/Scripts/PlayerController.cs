@@ -42,6 +42,10 @@ public class PlayerController : MonoBehaviour
       Anim.SetBool("isJump", false);
       Anim.SetBool("isDash", false);
       Anim.SetBool("isRun", false);
+      if (Talking)
+      {
+        PlayerBody.velocity = new Vector2(0f, 0f);
+      }
       return;
     }
     _inputHorizontalDirection = Input.GetAxisRaw("Horizontal");
@@ -81,6 +85,10 @@ public class PlayerController : MonoBehaviour
       Anim.SetBool("isJump", false);
       Anim.SetBool("isDash", false);
       Anim.SetBool("isRun", false);
+      if (Talking)
+      {
+        PlayerBody.velocity = new Vector2(0f, 0f);
+      }
       return;
     }
     _grounded = GroundCheck.IsTouchingLayers(GroundLayer);

@@ -37,6 +37,5 @@ public class RanaEvent : NPCController
     {
       RanaLocation.position = new Vector3(36.96f, -3.15f, -2);
     }
-
   }
 }
