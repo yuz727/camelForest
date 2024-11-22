@@ -2,7 +2,12 @@
   "Dialogues": [
     {
       "NPCName": "Veggie",
-      "Sentences": ["为什么要演奏春日影"]
+      "Sentences": [
+        "Wood.",
+        "Here are the cucumbers you gave me last time.",
+        "You might need some food on the road.",
+        "Be sure to bring Camel Back."
+      ]
     }
   ]
 }

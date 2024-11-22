@@ -18,7 +18,7 @@ public class TomorinEvents : NPCController
 
   void Update()
   {
-    if (Input.GetKeyDown(KeyCode.E) && _canTalk)
+    if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton0)) && _canTalk)
     {
       FindObjectOfType<CanvasController>().OpenDialogueBox();
       if (!_isTalking)

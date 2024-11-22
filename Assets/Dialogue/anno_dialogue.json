@@ -2,7 +2,12 @@
   "Dialogues": [
     {
       "NPCName": "London",
-      "Sentences": [""]
+      "Sentences": [
+        "Do you know Duck has a Bow in his house?",
+        "Not like there is anything nearby that is hostile...",
+        "Blacksmith's has some dynmaite that you might be able to use...",
+        "There's also some statue to the west of the village..."
+      ]
     }
   ]
 }

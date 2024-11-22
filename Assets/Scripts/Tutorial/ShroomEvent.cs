@@ -29,7 +29,6 @@ public class ShroomEvent : NPCController
         else
         {
           Dialogues = JsonConvert.DeserializeObject<DialogueCollection>(NPCDialogue.text).CollectionToQueue();
-
         }
         _isTalking = true;
         FindObjectOfType<PlayerController>().Talking = true;

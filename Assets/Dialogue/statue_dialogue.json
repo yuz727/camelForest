@@ -1,0 +1,44 @@
+{
+  "Dialogues": [
+    {
+      "NPCName": "Staue",
+      "Sentences": ["勇者お。", "ようこそ", "この剣をあげます。"]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": ["?", "You don't speak English?"]
+    },
+    {
+      "NPCName": "Staue",
+      "Sentences": [
+        "Oh, I'm in *Some English Speaking Country* now?",
+        "You're the first one that came here for like a couple decades."
+      ]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": [
+        "People gotta walk to get here.",
+        "That's a lot to ask ya now?"
+      ]
+    },
+    {
+      "NPCName": "Staue",
+      "Sentences": [
+        "Anyway, here's the holy sword that has been stored here.",
+        "Go use as a tool to spread hope upon these lands."
+      ]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": [
+        "Very sharp sword.",
+        "Would be real useful to slice open some rocks."
+      ]
+    },
+    {
+      "NPCName": "Staue",
+      "Sentences": ["You're gonna do what?!"]
+    }
+  ]
+}
