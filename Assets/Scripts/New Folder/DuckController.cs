@@ -21,6 +21,7 @@ public class DuckController : MonoBehaviour
   {
     if (PlayerFeet.IsTouching(DuckCollider))
     {
+      Debug.Log("Did'not");
       DuckAnim.SetBool("isJump", true);
       PlayerController.DuckJump(Bouncespeed);
       StartCoroutine(AnimTimer());
@@ -29,8 +30,7 @@ public class DuckController : MonoBehaviour
 
   private IEnumerator AnimTimer()
   {
-    yield return new WaitForSeconds(2f);
-    Debug.Log("Bro");
+    yield return new WaitForSeconds(0.3f);
     DuckAnim.SetBool("isJump", false);
   }
 

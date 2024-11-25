@@ -4,16 +4,22 @@ using UnityEngine;
 
 public class GabeEvent : NPCController
 {
-
-
   private bool _canTalk;
   private bool _isTalking;
 
+  void Start()
+  {
+    playerController = FindFirstObjectByType<PlayerController>();
+    canvasController = FindFirstObjectByType<CanvasController>();
+    dialogueTrigger = FindFirstObjectByType<DialogueTrigger>();
+    dialogueManager = FindFirstObjectByType<DialogueManager>();
+    itemController = FindFirstObjectByType<ItemController>();
+  }
   void Update()
   {
-    if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton0)) && _canTalk)
+    if (InputHandling.CheckInteract() && _canTalk)
     {
-      FindObjectOfType<PlayerController>().SetSpecialItem(SpecialItems.Crowbar);
+      itemController.SetSpecialItem(SpecialItems.Crowbar);
     }
   }
 

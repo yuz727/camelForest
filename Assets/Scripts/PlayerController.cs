@@ -15,15 +15,14 @@ public class PlayerController : MonoBehaviour
   public LayerMask GroundLayer;
   public Animator Anim;
   public SpriteRenderer Sprite;
-  public SpecialItems SpecialItem;
-  public List<Items> ItemsOwned;
   public bool CanDoubleJump;
   public bool CanDash;
   public bool Talking;
-  public bool Invincibility;
   public bool Jumping;
   public int ExtraJump;
-  public Vector3 RespawnPoint = new Vector3(43f, -4f, -5f);
+  public bool Invincibility;
+  public bool Mushroomed;
+  public Vector3 RespawnPoint = new(43f, -4f, -5f);
   private readonly float _acceleration = 50f;
   private readonly float _maxHorizontalSpeed = 5f;
   private readonly float _jumpSpeed = 20f;
@@ -32,9 +31,8 @@ public class PlayerController : MonoBehaviour
   private bool _grounded;
   private bool _dashing;
   private float _inputHorizontalDirection;
-  private bool _canCucumber = true;
-  private bool _canMushroom = true;
-  private bool _mushroomed;
+
+
   void Update()
   {
     if (_dashing || Talking)
@@ -51,28 +49,19 @@ public class PlayerController : MonoBehaviour
     _inputHorizontalDirection = Input.GetAxisRaw("Horizontal");
     _inputHorizontalDirection = (_inputHorizontalDirection == 0f) ? 0 : (_inputHorizontalDirection > 0) ? 1f : -1f;
     Move();
-    if ((Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.JoystickButton6)) && _canMushroom)
-    {
 
-      UseItem(Items.Mushroom);
-    }
-    if ((Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.JoystickButton7)) && _canCucumber)
+    if (InputHandling.CheckJumpDown() && (_grounded || ExtraJump > 0))
     {
-      UseItem(Items.Cucumber);
-    }
-    if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1))
-      && (_grounded || ExtraJump > 0))
-    {
+      Debug.Log("Jumping");
       Jump();
     }
-    else if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.JoystickButton1))
+    else if (InputHandling.CheckJumpUp() && Jumping)
     {
       Anim.SetBool("isJump", false);
       Jumping = false;
       PlayerBody.velocity = new Vector2(PlayerBody.velocity.x, 0);
     }
-    if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.JoystickButton5))
-        && CanDash)
+    if (InputHandling.CheckDash() && CanDash)
     {
       Dash();
     }
@@ -92,16 +81,10 @@ public class PlayerController : MonoBehaviour
       return;
     }
     _grounded = GroundCheck.IsTouchingLayers(GroundLayer);
-    if (_grounded)
-    {
-      Anim.SetBool("isJump", false);
-    }
-    if (_grounded && CanDoubleJump)
-    {
-      ExtraJump = 1;
-    }
-  }
+    if (_grounded) Anim.SetBool("isJump", false);
+    if (_grounded && CanDoubleJump) ExtraJump = 1;
 
+  }
 
   void Move()
   {
@@ -138,6 +121,7 @@ public class PlayerController : MonoBehaviour
     Jumping = true;
     PlayerBody.velocity = new Vector2(PlayerBody.velocity.x, speed);
   }
+
   void Jump()
   {
     Anim.SetBool("isJump", true);
@@ -151,15 +135,11 @@ public class PlayerController : MonoBehaviour
 
   void Dash()
   {
-    if (_inputHorizontalDirection == 0.0)
-    {
-      Debug.Log("Huh");
-      return;
-    }
+    if (_inputHorizontalDirection == 0.0) return;
     Anim.SetBool("isDash", true);
     var gravity = PlayerBody.gravityScale;
-    var dashTime = 0.2f;
-    if (_mushroomed)
+    var dashTime = 0.15f;
+    if (Mushroomed)
     {
       _inputHorizontalDirection = -_inputHorizontalDirection;
       dashTime = 0.4f;
@@ -197,79 +177,7 @@ public class PlayerController : MonoBehaviour
     PlayerBody.position = RespawnPoint;
   }
 
-  public void SetSpecialItem(SpecialItems specialItem)
-  {
-    if (SpecialItem != specialItem)
-    {
-      FindObjectOfType<CanvasController>().OpenDialogueBox();
-      SpecialItem = specialItem;
-      FindObjectOfType<DialogueTrigger>().Dialogue = new() { NPCName = "", Sentences = new string[] { $"Obtained the {specialItem}!" } };
-      FindObjectOfType<DialogueTrigger>().TriggerDialogue();
-      StartCoroutine(DialogueUITimer());
-    }
-    else
-    {
-      Debug.Log("Item Owned Already");
-    }
-  }
-  public void AddItem(Items item)
-  {
-    if (!ItemsOwned.Contains(item) && ItemsOwned.Count < 3)
-    {
-      FindObjectOfType<CanvasController>().OpenDialogueBox();
-      ItemsOwned.Add(item);
-      FindObjectOfType<DialogueTrigger>().Dialogue = new() { NPCName = "", Sentences = new string[] { $"Obtained the {item}!" } };
-      FindObjectOfType<DialogueTrigger>().TriggerDialogue();
-      StartCoroutine(DialogueUITimer());
-    }
-    else
-    {
-      Debug.Log("Item Owned Already");
-    }
-  }
 
-  private IEnumerator DialogueUITimer()
-  {
-    yield return new WaitForSeconds(2f);
-    FindObjectOfType<CanvasController>().CloseDialogueBox();
-  }
-
-  public void UseItem(Items item)
-  {
-    if (!ItemsOwned.Contains(item))
-    {
-      return;
-    }
-    switch (item)
-    {
-      case Items.Cucumber:
-        StartCoroutine(CucumberTrigger());
-        Invincibility = true;
-        _canCucumber = false;
-        break;
-      case Items.Mushroom:
-        StartCoroutine(MushroomTrigger());
-        _mushroomed = true;
-        _canMushroom = false;
-        break;
-      default:
-        break;
-    }
-  }
-
-  private IEnumerator CucumberTrigger()
-  {
-    yield return new WaitForSeconds(5f);
-    Invincibility = false;
-    _canCucumber = true;
-  }
-
-  private IEnumerator MushroomTrigger()
-  {
-    yield return new WaitForSeconds(10f);
-    _mushroomed = false;
-    _canMushroom = true;
-  }
   void Awake()
   {
     if (S_Instance == null)
@@ -301,7 +209,6 @@ public class PlayerController : MonoBehaviour
     if (!scene.name.Equals("Menu"))
     {
       _facingRight = false;
-
       Anim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
       Sprite = GameObject.FindGameObjectWithTag("Player").GetComponent<SpriteRenderer>();
       GroundLayer = LayerMask.GetMask("Ground");
@@ -311,18 +218,3 @@ public class PlayerController : MonoBehaviour
   }
 }
 
-public enum SpecialItems
-{
-  None,
-  Crowbar,
-  Dynamite,
-  Sword
-}
-public enum Items
-{
-  Key,
-  Notebook,
-  Mushroom,
-  Bow,
-  Cucumber
-}

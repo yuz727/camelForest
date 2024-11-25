@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class RockTrigger : MonoBehaviour
 {
-  public PlayerController playerController;
+  public ItemController itemController;
   // Start is called before the first frame update
   void Start()
   {
-    playerController = FindFirstObjectByType<PlayerController>();
-    if (playerController.SpecialItem != SpecialItems.Crowbar)
+    itemController = FindFirstObjectByType<ItemController>();
+    if (itemController.SpecialItem != SpecialItems.Crowbar)
     {
-      this.gameObject.SetActive(false);
+      gameObject.SetActive(false);
     }
   }
 

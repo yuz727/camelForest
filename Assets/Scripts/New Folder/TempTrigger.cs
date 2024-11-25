@@ -19,7 +19,6 @@ public class TempTrigger : MonoBehaviour
     if (box.IsTouchingLayers(player))
     {
       playerController.RespawnPoint = box.transform.position;
-      playerController.CanDoubleJump = true;
     }
   }
 }

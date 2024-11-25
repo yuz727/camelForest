@@ -11,16 +11,25 @@ public class RanaEvent : NPCController
   private bool _canTalk;
   private bool _isTalking;
 
+  void Start()
+  {
+    playerController = FindFirstObjectByType<PlayerController>();
+    canvasController = FindFirstObjectByType<CanvasController>();
+    dialogueTrigger = FindFirstObjectByType<DialogueTrigger>();
+    dialogueManager = FindFirstObjectByType<DialogueManager>();
+    itemController = null;
+  }
+
   void Update()
   {
-    if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton0)) && _canTalk)
+    if (InputHandling.CheckInteract() && _canTalk)
     {
-      FindObjectOfType<CanvasController>().OpenDialogueBox();
+      canvasController.OpenDialogueBox();
       if (!_isTalking)
       {
         Dialogues = JsonConvert.DeserializeObject<DialogueCollection>(NPCDialogue.text).CollectionToQueue();
         _isTalking = true;
-        FindObjectOfType<PlayerController>().Talking = true;
+        playerController.Talking = true;
       }
       _isTalking = DisplayDialogue();
     }

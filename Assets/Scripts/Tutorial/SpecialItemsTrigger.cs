@@ -7,19 +7,19 @@ public class SpecialItemsTrigger : MonoBehaviour
   public LayerMask Player;
   public GameObject RockSprite;
   public BoxCollider2D Rock;
-  public PlayerController playerController;
+  public ItemController itemController;
   // Start is called before the first frame update
   void Start()
   {
-    playerController = FindFirstObjectByType<PlayerController>();
+    itemController = FindFirstObjectByType<ItemController>();
   }
 
   // Update is called once per frame
   void Update()
   {
-    if (Rock.IsTouchingLayers(Player) || playerController.SpecialItem != SpecialItems.None)
+    if (Rock.IsTouchingLayers(Player) && itemController.SpecialItem != SpecialItems.None)
     {
-      if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.Joystick1Button3))
+      if (InputHandling.CheckUseItem())
       {
         RockSprite.SetActive(false);
       }

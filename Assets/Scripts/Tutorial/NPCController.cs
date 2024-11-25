@@ -8,7 +8,11 @@ public class NPCController : MonoBehaviour
   public LayerMask Player;
   public BoxCollider2D NPC;
   public GameObject Prompt;
-  public DialogueManager Manager;
+  public DialogueManager dialogueManager;
+  public DialogueTrigger dialogueTrigger;
+  public CanvasController canvasController;
+  public PlayerController playerController;
+  public ItemController itemController;
   public Queue<Dialogue> Dialogues;
   public TextAsset NPCDialogue;
 
@@ -27,19 +31,19 @@ public class NPCController : MonoBehaviour
   }
   public bool DisplayDialogue()
   {
-    if (FindObjectOfType<DialogueManager>().dialogueSentences.Count > 0)
+    if (dialogueManager.dialogueSentences.Count > 0)
     {
-      FindObjectOfType<DialogueManager>().DisplayNextSentence();
+      dialogueManager.DisplayNextSentence();
       return true;
     }
     if (Dialogues.Count > 0)
     {
-      FindObjectOfType<DialogueTrigger>().Dialogue = Dialogues.Dequeue();
-      FindObjectOfType<DialogueTrigger>().TriggerDialogue();
+      dialogueTrigger.Dialogue = Dialogues.Dequeue();
+      dialogueTrigger.TriggerDialogue();
       return true;
     }
-    FindObjectOfType<CanvasController>().CloseDialogueBox();
-    FindObjectOfType<PlayerController>().Talking = false;
+    canvasController.CloseDialogueBox();
+    playerController.Talking = false;
     return false;
   }
 }

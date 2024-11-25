@@ -14,11 +14,19 @@ public class ShroomEvent : NPCController
     Sentences = new string[] { "Don't Worry!", "It's Free!" }
   };
 
+  void Start()
+  {
+    playerController = FindFirstObjectByType<PlayerController>();
+    canvasController = FindFirstObjectByType<CanvasController>();
+    dialogueTrigger = FindFirstObjectByType<DialogueTrigger>();
+    dialogueManager = FindFirstObjectByType<DialogueManager>();
+    itemController = FindFirstObjectByType<ItemController>();
+  }
   void Update()
   {
-    if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton0)) && _canTalk)
+    if (InputHandling.CheckInteract() && _canTalk)
     {
-      FindObjectOfType<CanvasController>().OpenDialogueBox();
+      canvasController.OpenDialogueBox();
       if (!_isTalking)
       {
         if (StartRepeat)
@@ -31,7 +39,7 @@ public class ShroomEvent : NPCController
           Dialogues = JsonConvert.DeserializeObject<DialogueCollection>(NPCDialogue.text).CollectionToQueue();
         }
         _isTalking = true;
-        FindObjectOfType<PlayerController>().Talking = true;
+        playerController.Talking = true;
       }
       _isTalking = DisplayDialogue();
       if (_isTalking)

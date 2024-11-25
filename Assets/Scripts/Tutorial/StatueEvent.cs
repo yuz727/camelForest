@@ -8,29 +8,32 @@ public class StatueEvent : NPCController
   private bool _inactive;
   private bool _canTalk;
   private bool _isTalking;
-  private PlayerController playerController;
   void Start()
   {
     _inactive = false;
+    itemController = FindFirstObjectByType<ItemController>();
     playerController = FindFirstObjectByType<PlayerController>();
+    canvasController = FindFirstObjectByType<CanvasController>();
+    dialogueTrigger = FindFirstObjectByType<DialogueTrigger>();
+    dialogueManager = FindFirstObjectByType<DialogueManager>();
   }
 
   void Update()
   {
-    if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton0)) && _canTalk && !_inactive)
+    if (InputHandling.CheckInteract() && _canTalk && !_inactive)
     {
-      FindObjectOfType<CanvasController>().OpenDialogueBox();
+      canvasController.OpenDialogueBox();
       if (!_isTalking)
       {
         Dialogues = JsonConvert.DeserializeObject<DialogueCollection>(NPCDialogue.text).CollectionToQueue();
         _isTalking = true;
-        FindObjectOfType<PlayerController>().Talking = true;
+        playerController.Talking = true;
       }
       _isTalking = DisplayDialogue();
       if (!_isTalking)
       {
         _inactive = true;
-        playerController.SetSpecialItem(SpecialItems.Sword);
+        itemController.SetSpecialItem(SpecialItems.Sword);
       }
     }
   }
