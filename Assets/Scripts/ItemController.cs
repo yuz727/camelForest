@@ -17,11 +17,12 @@ public class ItemController : MonoBehaviour
   private bool _canMushroom = true;
   private int _arrowCount;
   private int _cucumberCount;
-
+  private bool yes;
   void Update()
   {
-    if (InputHandling.CheckUseItem()) UseItem(_index);
+    if (InputHandling.CheckUseItem()) UseItem(ItemsOwned[_index]);
   }
+
 
   public void SetSpecialItem(SpecialItems specialItem)
   {

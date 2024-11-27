@@ -17,7 +17,7 @@ public class DuckController : MonoBehaviour
     PlayerController = FindObjectOfType<PlayerController>();
   }
 
-  void FixedUpdate()
+  void Update()
   {
     if (PlayerFeet.IsTouching(DuckCollider))
     {

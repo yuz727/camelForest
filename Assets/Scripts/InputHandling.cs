@@ -50,6 +50,11 @@ public class InputHandling : MonoBehaviour
     return Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(keyCodes[0]);
   }
 
+  public static bool CheckJumpHold()
+  {
+    return Input.GetKey(KeyCode.Space) || Input.GetKeyUp(keyCodes[0]);
+  }
+
   public static bool CheckUseItem()
   {
     return Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(keyCodes[1]);
@@ -64,7 +69,6 @@ public class InputHandling : MonoBehaviour
   {
     return Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(keyCodes[3]);
   }
-
 
   // Swap Items in slot 0 1 or 2
   public static int CheckSwitchItem(int currentItem)

@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
   public Rigidbody2D PlayerBody;
   public BoxCollider2D GroundCheck;
   public LayerMask GroundLayer;
+  public LayerMask StableGround;
   public Animator Anim;
   public SpriteRenderer Sprite;
   public bool CanDoubleJump;
@@ -22,7 +23,8 @@ public class PlayerController : MonoBehaviour
   public int ExtraJump;
   public bool Invincibility;
   public bool Mushroomed;
-  public Vector3 RespawnPoint = new(43f, -4f, -5f);
+  public bool Viewing;
+  public Vector3 RespawnPoint = new();
   private readonly float _acceleration = 50f;
   private readonly float _maxHorizontalSpeed = 5f;
   private readonly float _jumpSpeed = 20f;
@@ -35,13 +37,13 @@ public class PlayerController : MonoBehaviour
 
   void Update()
   {
-    if (_dashing || Talking)
+    if (_dashing || Talking || Viewing)
     {
       Anim.SetBool("isJump", false);
-      Anim.SetBool("isDash", false);
       Anim.SetBool("isRun", false);
-      if (Talking)
+      if (!_dashing)
       {
+        Anim.SetBool("isDash", false);
         PlayerBody.velocity = new Vector2(0f, 0f);
       }
       return;
@@ -52,7 +54,6 @@ public class PlayerController : MonoBehaviour
 
     if (InputHandling.CheckJumpDown() && (_grounded || ExtraJump > 0))
     {
-      Debug.Log("Jumping");
       Jump();
     }
     else if (InputHandling.CheckJumpUp() && Jumping)
@@ -69,19 +70,14 @@ public class PlayerController : MonoBehaviour
 
   void FixedUpdate()
   {
-    if (_dashing || Talking)
+    _grounded = GroundCheck.IsTouchingLayers(GroundLayer);
+    RespawnPointUpdate();
+    if (_grounded && !InputHandling.CheckJumpHold() && PlayerBody.velocity.y <= 0f)
     {
       Anim.SetBool("isJump", false);
-      Anim.SetBool("isDash", false);
-      Anim.SetBool("isRun", false);
-      if (Talking)
-      {
-        PlayerBody.velocity = new Vector2(0f, 0f);
-      }
-      return;
+      Jumping = false;
     }
-    _grounded = GroundCheck.IsTouchingLayers(GroundLayer);
-    if (_grounded) Anim.SetBool("isJump", false);
+
     if (_grounded && CanDoubleJump) ExtraJump = 1;
 
   }
@@ -102,6 +98,8 @@ public class PlayerController : MonoBehaviour
     if (!Jumping)
     {
       Anim.SetBool("isRun", true);
+      Anim.SetBool("isDash", false);
+      Anim.SetBool("isJump", false);
     }
     PlayerBody.velocity = new Vector2(PlayerBody.velocity.x + _inputHorizontalDirection * _acceleration * Time.deltaTime,
                                         PlayerBody.velocity.y);
@@ -118,6 +116,8 @@ public class PlayerController : MonoBehaviour
   public void DuckJump(float speed)
   {
     Anim.SetBool("isJump", true);
+    Anim.SetBool("isDash", false);
+    Anim.SetBool("isRun", false);
     Jumping = true;
     PlayerBody.velocity = new Vector2(PlayerBody.velocity.x, speed);
   }
@@ -125,6 +125,8 @@ public class PlayerController : MonoBehaviour
   void Jump()
   {
     Anim.SetBool("isJump", true);
+    Anim.SetBool("isDash", false);
+    Anim.SetBool("isRun", false);
     Jumping = true;
     PlayerBody.velocity = new Vector2(PlayerBody.velocity.x, _jumpSpeed);
     if (ExtraJump > 0)
@@ -137,6 +139,8 @@ public class PlayerController : MonoBehaviour
   {
     if (_inputHorizontalDirection == 0.0) return;
     Anim.SetBool("isDash", true);
+    Anim.SetBool("isJump", false);
+    Anim.SetBool("isRun", false);
     var gravity = PlayerBody.gravityScale;
     var dashTime = 0.15f;
     if (Mushroomed)
@@ -171,7 +175,13 @@ public class PlayerController : MonoBehaviour
   {
     Respawn();
   }
-
+  private void RespawnPointUpdate()
+  {
+    if (GroundCheck.IsTouchingLayers(StableGround))
+    {
+      RespawnPoint = PlayerBody.position;
+    }
+  }
   private void Respawn()
   {
     PlayerBody.position = RespawnPoint;
@@ -212,6 +222,7 @@ public class PlayerController : MonoBehaviour
       Anim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
       Sprite = GameObject.FindGameObjectWithTag("Player").GetComponent<SpriteRenderer>();
       GroundLayer = LayerMask.GetMask("Ground");
+      StableGround = LayerMask.GetMask("StableGround");
       PlayerBody = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
       GroundCheck = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<BoxCollider2D>();
     }
