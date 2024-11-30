@@ -14,6 +14,11 @@ public class TomorinEvents : NPCController
     Sentences = new string[] { "Give this to Camel when you see her.", "She'll understand." }
   };
 
+  private readonly Dialogue _itemFull = new()
+  {
+    NPCName = "GOAT",
+    Sentences = new string[] { "You're burdening too much, Wood." }
+  };
   void Start()
   {
     playerController = FindFirstObjectByType<PlayerController>();
@@ -47,10 +52,9 @@ public class TomorinEvents : NPCController
       {
         return;
       }
-      if (!StartRepeat)
+      if (!StartRepeat && itemController.AddItem(Items.Notebook))
       {
         StartRepeat = true;
-        itemController.AddItem(Items.Notebook);
       }
     }
   }

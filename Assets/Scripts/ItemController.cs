@@ -12,38 +12,42 @@ public class ItemController : MonoBehaviour
   public CanvasController canvasController;
   public DialogueTrigger dialogueTrigger;
   public SpecialItems SpecialItem;
+  public SpecialItems SpecialItemUsed;
   public List<Items> ItemsOwned;
-  public Rigidbody2D PlayerBody;
-  private int _index;
-  private Items _toBeAdded;
-  private int _itemSpaceRemaining;
+  public int _index;
+  public int _itemSpaceRemaining;
   private int _nextOpening;
   private bool _canCucumber = true;
   private bool _canMushroom = true;
   private int _arrowCount;
   private int _cucumberCount;
-  private bool _replacingItem;
+  public bool ReplacingItem;
+  public CartState cartState;
+
   void Update()
   {
     var newIndex = InputHandling.CheckSwitchItem(_index);
+    if (InputHandling.CheckDiscardItem())
+    {
+      DiscardItem();
+    }
     if (newIndex != -1)
     {
       itemUIController.UpdateSelect(newIndex);
       _index = newIndex;
     }
-    if (_replacingItem && InputHandling.CheckInteract())
+    if (ReplacingItem && InputHandling.CheckInteract())
     {
-      _replacingItem = false;
+      ReplacingItem = false;
       playerController.Talking = false;
       canvasController.CloseDialogueBox();
       return;
     }
-    if (_replacingItem && InputHandling.CheckUseItem())
+    if (ReplacingItem && InputHandling.CheckUseItem())
     {
       RemoveItem(_index);
       itemUIController.UpdateSlots(Items.Empty, _index);
-      itemUIController.UpdateSlots(_toBeAdded, _index);
-      _replacingItem = false;
+      ReplacingItem = false;
       playerController.Talking = false;
       canvasController.CloseDialogueBox();
       return;
@@ -51,6 +55,14 @@ public class ItemController : MonoBehaviour
     else if (InputHandling.CheckUseItem()) UseItem(_index);
   }
 
+  void DiscardItem()
+  {
+    canvasController.OpenDialogueBox();
+    playerController.Talking = true;
+    ReplacingItem = true;
+    dialogueTrigger.Dialogue = new() { NPCName = "", Sentences = new string[] { "Press Use on the item to discard it, or Press Interact if you want to replace none of it." } };
+    dialogueTrigger.TriggerDialogue();
+  }
 
   public void SetSpecialItem(SpecialItems specialItem)
   {
@@ -64,15 +76,15 @@ public class ItemController : MonoBehaviour
       StartCoroutine(DialogueUITimer());
     }
   }
-  public void AddItem(Items item)
+  public bool AddItem(Items item)
   {
     if (_itemSpaceRemaining == 0)
     {
       canvasController.OpenDialogueBox();
-      playerController.Talking = true;
-      dialogueTrigger.Dialogue = new() { NPCName = "", Sentences = new string[] { "Item bag full, choose the item to discard. Press Use to replace the item you want to replace, or Press Interact if you want to replace none of it." } };
-      _toBeAdded = item;
-      return;
+      dialogueTrigger.Dialogue = new() { NPCName = "", Sentences = new string[] { "Inventory is full, need to discard item to make space." } };
+      dialogueTrigger.TriggerDialogue();
+      StartCoroutine(DialogueUITimer());
+      return false;
     }
     if (!ItemsOwned.Contains(item))
     {
@@ -93,19 +105,21 @@ public class ItemController : MonoBehaviour
           goto default;
         case Items.Cucumber:
           _cucumberCount = 5;
-          itemUIController.ArrowCount.text = "5";
+          itemUIController.CucumberCount.text = "5";
           goto default;
         default:
           ItemsOwned[_nextOpening] = item;
           itemUIController.UpdateSlots(item, _nextOpening);
           _itemSpaceRemaining--;
-          break;
+          dialogueTrigger.Dialogue = new() { NPCName = "", Sentences = new string[] { $"Obtained the {item}!" } };
+          dialogueTrigger.TriggerDialogue();
+          StartCoroutine(DialogueUITimer());
+          return true;
       }
-      dialogueTrigger.Dialogue = new() { NPCName = "", Sentences = new string[] { $"Obtained the {item}!" } };
-      dialogueTrigger.TriggerDialogue();
-      StartCoroutine(DialogueUITimer());
     }
+    return false;
   }
+
 
   private IEnumerator DialogueUITimer()
   {
@@ -132,23 +146,28 @@ public class ItemController : MonoBehaviour
         ShootBow(index);
         break;
       case Items.Cucumber:
-        StartCoroutine(CucumberTrigger());
-        playerController.Invincibility = true;
-        _canCucumber = false;
-        _cucumberCount--;
-        itemUIController.CucumberCount.text = _cucumberCount.ToString();
-        if (_cucumberCount == 0)
+        if (_canCucumber)
         {
-          RemoveItem(index);
+          StartCoroutine(CucumberTrigger());
+          playerController.Invincibility = true;
+          _canCucumber = false;
+          _cucumberCount--;
+          itemUIController.CucumberCount.text = _cucumberCount.ToString();
+          if (_cucumberCount == 0)
+          {
+            RemoveItem(index);
+          }
         }
         break;
       case Items.Mushroom:
-        StartCoroutine(MushroomTrigger());
-        playerController.Mushroomed = true;
-        _canMushroom = false;
+        if (_canMushroom)
+        {
+          StartCoroutine(MushroomTrigger());
+          playerController.Mushroomed = true;
+          _canMushroom = false;
+        }
         break;
       default:
-        RemoveItem(index);
         break;
     }
   }
@@ -159,24 +178,17 @@ public class ItemController : MonoBehaviour
     {
       if (ItemsOwned[i] == item)
       {
-        UseItem(i);
+        RemoveItem(i);
       }
     }
   }
 
-  private bool MaxHandle()
-  {
-    playerController.Talking = false;
-    canvasController.CloseDialogueBox();
-    return false;
-  }
 
   private void RemoveItem(int index)
   {
     itemUIController.UpdateSlots(Items.Empty, index);
     ItemsOwned[index] = Items.Empty;
     _itemSpaceRemaining++;
-
   }
 
   private IEnumerator CucumberTrigger()
@@ -199,6 +211,7 @@ public class ItemController : MonoBehaviour
     {
       S_Instance = this;
       SpecialItem = SpecialItems.None;
+      cartState = CartState.Basketball;
       _cucumberCount = -1;
       _arrowCount = -1;
       _itemSpaceRemaining = 3;

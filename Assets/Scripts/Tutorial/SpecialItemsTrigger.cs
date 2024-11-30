@@ -31,14 +31,17 @@ public class SpecialItemsTrigger : MonoBehaviour
           case SpecialItems.Crowbar:
             anim.SetBool("isCrowbar", true);
             StartCoroutine(AnimTimer(0.6f));
+            itemController.SpecialItemUsed = SpecialItems.Crowbar;
             break;
           case SpecialItems.Dynamite:
             anim.SetBool("isBomb", true);
             StartCoroutine(AnimTimer(1.3f));
+            itemController.SpecialItemUsed = SpecialItems.Dynamite;
             break;
           case SpecialItems.Sword:
             anim.SetBool("isSword", true);
             StartCoroutine(AnimTimer(0.9f));
+            itemController.SpecialItemUsed = SpecialItems.Sword;
             break;
           default:
             canvasController.OpenDialogueBox();

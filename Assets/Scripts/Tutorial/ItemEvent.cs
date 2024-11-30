@@ -12,6 +12,7 @@ public class ItemEvent : MonoBehaviour
   public GameObject ThisItem;
   public BoxCollider2D Item;
   public LayerMask player;
+  public bool Collided;
 
   void Start()
   {
@@ -23,29 +24,38 @@ public class ItemEvent : MonoBehaviour
 
   void FixedUpdate()
   {
-    if (Item.IsTouchingLayers(player))
+    if (!Collided && Item.IsTouchingLayers(player))
     {
+      Collided = true;
       switch (ThisItem)
       {
         case var ThisItem when ThisItem == S_Key:
-          S_ItemController.AddItem(Items.Key);
-          ThisItem.SetActive(false);
+          if (S_ItemController.AddItem(Items.Key))
+          {
+            ThisItem.SetActive(false);
+          }
           break;
         case var ThisItem when ThisItem == S_Mushroom:
-          if (FindObjectOfType<ShroomEvent>().StartRepeat)
+          if (FindObjectOfType<ShroomEvent>().StartRepeat && S_ItemController.AddItem(Items.Mushroom))
           {
-            S_ItemController.AddItem(Items.Mushroom);
             ThisItem.SetActive(false);
           }
           break;
         case var ThisItem when ThisItem == S_Bow:
-          S_ItemController.AddItem(Items.Bow);
-          ThisItem.SetActive(false);
+          if (S_ItemController.AddItem(Items.Bow))
+          {
+            ThisItem.SetActive(false);
+          }
           break;
         default:
           break;
       } // Switch
-    } // if in contact
+      return;
+    }
+    else if (!Item.IsTouchingLayers(player))
+    {
+      Collided = false;
+    }
   }
 
   void Respawn()

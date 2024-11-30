@@ -14,7 +14,7 @@
     },
     {
       "NPCName": "ShroomTrainer",
-      "Sentences": ["Don't Worry!", "It's Free!", "Also 100% Organic"]
+      "Sentences": ["Don't Worry!", "It's Free!", "Also 100% Organic."]
     }
   ]
 }

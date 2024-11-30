@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-  public float moveSpeed = 0.1f;
-  public float moveDistance = 1f;
-  public float idelTime = 4f;
+  public float moveSpeed;
+  public float moveDistance;
+  public float idelTime;
   public float h = -1;
   float distance = 0;
   float time = 0;
@@ -62,7 +62,6 @@ public class EnemyController : MonoBehaviour
       return;
     }
     isDead = true;
-    Debug.Log("Enemy Die.");
     anim.SetBool("isDie", true);
     Destroy(gameObject, 0.3f);
   }

@@ -17,6 +17,13 @@ public class SoyoEvent : NPCController
     Sentences = new string[] { "Make sure to bring Camel Back." }
   };
 
+  private readonly Dialogue _itemFull = new()
+  {
+    NPCName = "Veggie",
+    Sentences = new string[] { "You're holding too much items, Wood.",
+    "I would give you something but I have to keep your bag light." }
+  };
+
   void Start()
   {
     playerController = FindFirstObjectByType<PlayerController>();
@@ -28,6 +35,7 @@ public class SoyoEvent : NPCController
 
   void Update()
   {
+    if (itemController.ReplacingItem) return;
     if (InputHandling.CheckInteract() && _canTalk)
     {
       canvasController.OpenDialogueBox();
@@ -38,10 +46,14 @@ public class SoyoEvent : NPCController
           Dialogues = new Queue<Dialogue>();
           Dialogues.Enqueue(_repeatDialogue);
         }
+        else if (itemController._itemSpaceRemaining == 0)
+        {
+          Dialogues = new Queue<Dialogue>();
+          Dialogues.Enqueue(_itemFull);
+        }
         else
         {
           Dialogues = JsonConvert.DeserializeObject<DialogueCollection>(NPCDialogue.text).CollectionToQueue();
-
         }
         _isTalking = true;
         playerController.Talking = true;
@@ -51,16 +63,14 @@ public class SoyoEvent : NPCController
       {
         return;
       }
-      if (!StartRepeat)
+      if (itemController._itemSpaceRemaining != 0 && !StartRepeat && itemController.AddItem(Items.Cucumber))
       {
         StartRepeat = true;
-        itemController.AddItem(Items.Cucumber);
       }
     }
   }
   void FixedUpdate()
   {
     _canTalk = CheckPlayerOverlap();
-
   }
 }

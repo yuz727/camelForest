@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
       if (!_dashing)
       {
         Anim.SetBool("isDash", false);
-        PlayerBody.velocity = new Vector2(0f, 0f);
+        PlayerBody.velocity = new Vector2(0f, PlayerBody.velocity.y);
       }
       return;
     }

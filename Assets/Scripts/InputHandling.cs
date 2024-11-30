@@ -28,7 +28,8 @@ public class InputHandling : MonoBehaviour
                       KeyCode.Joystick1Button0,
                       KeyCode.Joystick1Button5,
                       KeyCode.Joystick1Button6,
-                      KeyCode.Joystick1Button7};
+                      KeyCode.Joystick1Button7,
+                      KeyCode.Joystick1Button3};
   }
 
   public static void SetXbox()
@@ -38,7 +39,8 @@ public class InputHandling : MonoBehaviour
                       KeyCode.Joystick2Button2,
                       KeyCode.Joystick2Button5,
                       KeyCode.Mouse1,
-                      KeyCode.Mouse0};
+                      KeyCode.Mouse0,
+                      KeyCode.Joystick1Button3};
   }
 
   public static bool CheckJumpDown()
@@ -54,6 +56,12 @@ public class InputHandling : MonoBehaviour
   {
     return Input.GetKey(KeyCode.Space) || Input.GetKeyUp(keyCodes[0]);
   }
+
+  public static bool CheckDiscardItem()
+  {
+    return Input.GetKey(KeyCode.Tab) || Input.GetKeyUp(keyCodes[6]);
+  }
+
 
   public static bool CheckUseItem()
   {

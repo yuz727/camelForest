@@ -18,7 +18,7 @@ public class RikiEvent : NPCController
   {
     if (InputHandling.CheckInteract() && _canTalk)
     {
-      itemController.SetSpecialItem(SpecialItems.Crowbar);
+      itemController.SetSpecialItem(SpecialItems.Dynamite);
     }
   }
 
