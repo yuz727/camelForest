@@ -34,7 +34,6 @@ public class PlayerController : MonoBehaviour
   private bool _dashing;
   private float _inputHorizontalDirection;
 
-
   void Update()
   {
     if (_dashing || Talking || Viewing)

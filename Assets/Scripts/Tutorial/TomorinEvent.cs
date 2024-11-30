@@ -38,7 +38,6 @@ public class TomorinEvents : NPCController
         else
         {
           Dialogues = JsonConvert.DeserializeObject<DialogueCollection>(NPCDialogue.text).CollectionToQueue();
-
         }
         _isTalking = true;
         playerController.Talking = true;

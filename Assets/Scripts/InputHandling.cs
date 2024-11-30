@@ -73,19 +73,19 @@ public class InputHandling : MonoBehaviour
   // Swap Items in slot 0 1 or 2
   public static int CheckSwitchItem(int currentItem)
   {
-    var ret = currentItem;
+    var ret = -1;
     if (Input.GetKeyDown(KeyCode.Alpha1)) ret = 0;
     if (Input.GetKeyDown(KeyCode.Alpha2)) ret = 1;
     if (Input.GetKeyDown(KeyCode.Alpha3)) ret = 2;
     if (Input.GetKeyDown(keyCodes[4]))
     {
       if (currentItem == 0) ret = 2;
-      else ret--;
+      else ret = currentItem - 1;
     }
     if (Input.GetKeyDown(keyCodes[5]))
     {
       if (currentItem == 2) ret = 0;
-      else ret--;
+      else ret = currentItem + 1;
     }
     return ret;
 

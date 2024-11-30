@@ -21,7 +21,6 @@ public class DuckController : MonoBehaviour
   {
     if (PlayerFeet.IsTouching(DuckCollider))
     {
-      Debug.Log("Did'not");
       DuckAnim.SetBool("isJump", true);
       PlayerController.DuckJump(Bouncespeed);
       StartCoroutine(AnimTimer());

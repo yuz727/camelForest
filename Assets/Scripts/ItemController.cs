@@ -6,20 +6,44 @@ public class ItemController : MonoBehaviour
 {
   public static ItemController S_Instance;
   public PlayerController playerController;
+  public ItemUIController itemUIController;
   public CanvasController canvasController;
   public DialogueTrigger dialogueTrigger;
   public SpecialItems SpecialItem;
   public List<Items> ItemsOwned;
   public Rigidbody2D PlayerBody;
   private int _index;
+  private Items _toBeAdded;
   private int _itemSpaceRemaining;
   private bool _canCucumber = true;
   private bool _canMushroom = true;
   private int _arrowCount;
   private int _cucumberCount;
-  private bool yes;
+  private bool _replacingItem;
   void Update()
   {
+    var newIndex = InputHandling.CheckSwitchItem(_index);
+    if (newIndex != -1)
+    {
+      itemUIController.UpdateSelect(newIndex);
+    }
+    if (_replacingItem && InputHandling.CheckInteract())
+    {
+      _replacingItem = false;
+      playerController.Talking = false;
+      canvasController.CloseDialogueBox();
+      return;
+    }
+    if (_replacingItem && InputHandling.CheckUseItem())
+    {
+      RemoveItem(ItemsOwned[_index]);
+      itemUIController.UpdateSlots(Items.Empty, _index);
+      itemUIController.UpdateSlots(_toBeAdded, _index);
+      _replacingItem = false;
+      playerController.Talking = false;
+      canvasController.CloseDialogueBox();
+      return;
+    }
     if (InputHandling.CheckUseItem()) UseItem(ItemsOwned[_index]);
   }
 
@@ -30,6 +54,7 @@ public class ItemController : MonoBehaviour
     {
       FindObjectOfType<CanvasController>().OpenDialogueBox();
       SpecialItem = specialItem;
+      itemUIController.UpdateSpecialItem(specialItem);
       FindObjectOfType<DialogueTrigger>().Dialogue = new() { NPCName = "", Sentences = new string[] { $"Obtained the {specialItem}!" } };
       FindObjectOfType<DialogueTrigger>().TriggerDialogue();
       StartCoroutine(DialogueUITimer());
@@ -41,12 +66,13 @@ public class ItemController : MonoBehaviour
   }
   public void AddItem(Items item)
   {
-    if (ItemsOwned.Count >= 3)
+    if (_itemSpaceRemaining == 0)
     {
-      if (!MaxHandle())
-      {
-        return;
-      }
+      canvasController.OpenDialogueBox();
+      playerController.Talking = true;
+      dialogueTrigger.Dialogue = new() { NPCName = "", Sentences = new string[] { "Item bag full, choose the item to discard. Press Use to replace the item you want to replace, or Press Interact if you want to replace none of it." } };
+      _toBeAdded = item;
+      return;
     }
     if (!ItemsOwned.Contains(item))
     {
@@ -74,6 +100,7 @@ public class ItemController : MonoBehaviour
     yield return new WaitForSeconds(2f);
     canvasController.CloseDialogueBox();
   }
+
   public void ShootBow()
   {
     //TODO: Implement
@@ -119,9 +146,6 @@ public class ItemController : MonoBehaviour
 
   private bool MaxHandle()
   {
-    canvasController.OpenDialogueBox();
-    playerController.Talking = true;
-    dialogueTrigger.Dialogue = new() { NPCName = "", Sentences = new string[] { "Item bag full, choose the item to discard." } };
 
     playerController.Talking = false;
     canvasController.CloseDialogueBox();
@@ -157,6 +181,7 @@ public class ItemController : MonoBehaviour
     playerController.Mushroomed = false;
     _canMushroom = true;
   }
+
   void Awake()
   {
     if (S_Instance == null)
@@ -189,6 +214,7 @@ public class ItemController : MonoBehaviour
     Debug.Log("Entering " + scene.name);
     if (!scene.name.Equals("Menu"))
     {
+      itemUIController = FindFirstObjectByType<ItemUIController>();
       canvasController = FindFirstObjectByType<CanvasController>();
       playerController = FindFirstObjectByType<PlayerController>();
       dialogueTrigger = FindFirstObjectByType<DialogueTrigger>();

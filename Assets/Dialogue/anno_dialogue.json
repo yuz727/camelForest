@@ -2,6 +2,10 @@
   "Dialogues": [
     {
       "NPCName": "London",
+      "Sentences": ["Wood!", "Are you going to look for Camel?"]
+    },
+    {
+      "NPCName": "London",
       "Sentences": [
         "Do you know Duck has a Bow in his house?",
         "Not like there is anything nearby that is hostile...",

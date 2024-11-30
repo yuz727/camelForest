@@ -2,7 +2,27 @@ fileFormatVersion: 2
 guid: 154cf0ed0a6129c4294886df31889aff
 ScriptedImporter:
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: bomb
+    second: {fileID: 7400000, guid: 9de71f6d71cd6ad40845e6a1c956aa95, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: corwbar
+    second: {fileID: 7400000, guid: ebfa6a0b2d3ca76459d8a7c5e30fef43, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: idel
+    second: {fileID: 7400000, guid: edddb642dbc272c4091754b6a28b206c, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: sword
+    second: {fileID: 7400000, guid: 0e70410d5ab46484e8b47b355af2afce, type: 2}
   serializedVersion: 2
   userData: 
   assetBundleName: 
@@ -97,7 +117,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638677988681252799
+  platformSettingsDirtyTick: 638685131647472976
   textureAssetName: 
   singleSpriteImportData:
   - name: 

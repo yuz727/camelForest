@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class TempTrigger : MonoBehaviour
+public class RespawnTrigger : MonoBehaviour
 {
   public PlayerController playerController;
   public LayerMask player;
@@ -19,6 +20,7 @@ public class TempTrigger : MonoBehaviour
     if (box.IsTouchingLayers(player))
     {
       playerController.RespawnPoint = box.transform.position;
+      gameObject.SetActive(false);
     }
   }
 }
