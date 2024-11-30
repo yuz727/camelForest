@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 public class ItemUIController : MonoBehaviour
 {
   public ItemController itemController;
-  private readonly List<Vector3> slots = new() { new(236.6f, -284f, 1f), new(316.3f, -284f, 1f), new(395.9f, -284f, 1f) };
+  private readonly List<Vector3> slots = new() { new(-213.9f, 0f, 10f), new(-71.3f, 0f, 10f), new(72f, 0f, 10f) };
   private GameObject[] _occupiedSlots;
   public GameObject Select;
   public GameObject Bow;
@@ -16,9 +18,13 @@ public class ItemUIController : MonoBehaviour
   public GameObject Sword;
   public GameObject Crowbar;
   public GameObject Dynamite;
+  public TMP_Text CucumberCount;
+  public TMP_Text ArrowCount;
 
   void Start()
   {
+    CucumberCount.text = "5";
+    ArrowCount.text = "20";
     _occupiedSlots = new GameObject[] { Bow, Notebook, Mushroom };
     itemController = FindFirstObjectByType<ItemController>();
     for (int i = 0; i < itemController.ItemsOwned.Count; i++)
@@ -30,9 +36,8 @@ public class ItemUIController : MonoBehaviour
 
   public void UpdateSelect(int index)
   {
-    Debug.Log("Moving");
     Select.SetActive(true);
-    Select.transform.position = slots[index];
+    Select.transform.localPosition = slots[index];
   }
 
   public void UpdateSlots(Items item, int index)
@@ -40,27 +45,27 @@ public class ItemUIController : MonoBehaviour
     switch (item)
     {
       case Items.Key:
-        Key.transform.position = slots[index];
+        Key.transform.localPosition = slots[index];
         _occupiedSlots[index] = Key;
         Key.SetActive(true);
         break;
       case Items.Bow:
-        Bow.transform.position = slots[index];
+        Bow.transform.localPosition = slots[index];
         _occupiedSlots[index] = Bow;
         Bow.SetActive(true);
         break;
       case Items.Notebook:
-        Notebook.transform.position = slots[index];
+        Notebook.transform.localPosition = slots[index];
         _occupiedSlots[index] = Notebook;
         Notebook.SetActive(true);
         break;
       case Items.Cucumber:
-        Cucumber.transform.position = slots[index];
+        Cucumber.transform.localPosition = slots[index];
         _occupiedSlots[index] = Cucumber;
         Cucumber.SetActive(true);
         break;
       case Items.Mushroom:
-        Mushroom.transform.position = slots[index];
+        Mushroom.transform.localPosition = slots[index];
         _occupiedSlots[index] = Mushroom;
         Mushroom.SetActive(true);
         break;

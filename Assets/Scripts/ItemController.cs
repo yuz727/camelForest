@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 public class ItemController : MonoBehaviour
 {
   public static ItemController S_Instance;
@@ -15,6 +17,7 @@ public class ItemController : MonoBehaviour
   private int _index;
   private Items _toBeAdded;
   private int _itemSpaceRemaining;
+  private int _nextOpening;
   private bool _canCucumber = true;
   private bool _canMushroom = true;
   private int _arrowCount;
@@ -26,6 +29,7 @@ public class ItemController : MonoBehaviour
     if (newIndex != -1)
     {
       itemUIController.UpdateSelect(newIndex);
+      _index = newIndex;
     }
     if (_replacingItem && InputHandling.CheckInteract())
     {
@@ -36,7 +40,7 @@ public class ItemController : MonoBehaviour
     }
     if (_replacingItem && InputHandling.CheckUseItem())
     {
-      RemoveItem(ItemsOwned[_index]);
+      RemoveItem(_index);
       itemUIController.UpdateSlots(Items.Empty, _index);
       itemUIController.UpdateSlots(_toBeAdded, _index);
       _replacingItem = false;
@@ -44,7 +48,7 @@ public class ItemController : MonoBehaviour
       canvasController.CloseDialogueBox();
       return;
     }
-    if (InputHandling.CheckUseItem()) UseItem(ItemsOwned[_index]);
+    else if (InputHandling.CheckUseItem()) UseItem(_index);
   }
 
 
@@ -59,10 +63,6 @@ public class ItemController : MonoBehaviour
       FindObjectOfType<DialogueTrigger>().TriggerDialogue();
       StartCoroutine(DialogueUITimer());
     }
-    else
-    {
-      Debug.Log("Item Owned Already");
-    }
   }
   public void AddItem(Items item)
   {
@@ -76,17 +76,29 @@ public class ItemController : MonoBehaviour
     }
     if (!ItemsOwned.Contains(item))
     {
+      for (int i = 0; i < 3; i++)
+      {
+        if (ItemsOwned[i] == Items.Empty)
+        {
+          _nextOpening = i;
+          break;
+        }
+      }
       canvasController.OpenDialogueBox();
       switch (item)
       {
         case Items.Bow:
           _arrowCount = 20;
+          itemUIController.ArrowCount.text = "20";
           goto default;
         case Items.Cucumber:
           _cucumberCount = 5;
+          itemUIController.ArrowCount.text = "5";
           goto default;
         default:
-          ItemsOwned.Add(item);
+          ItemsOwned[_nextOpening] = item;
+          itemUIController.UpdateSlots(item, _nextOpening);
+          _itemSpaceRemaining--;
           break;
       }
       dialogueTrigger.Dialogue = new() { NPCName = "", Sentences = new string[] { $"Obtained the {item}!" } };
@@ -101,13 +113,14 @@ public class ItemController : MonoBehaviour
     canvasController.CloseDialogueBox();
   }
 
-  public void ShootBow()
+  public void ShootBow(int index)
   {
     //TODO: Implement
     _arrowCount--;
+    itemUIController.ArrowCount.text = _arrowCount.ToString();
     if (_arrowCount <= 0)
     {
-      RemoveItem(Items.Bow);
+      RemoveItem(index);
     }
   }
 
@@ -116,12 +129,18 @@ public class ItemController : MonoBehaviour
     switch (ItemsOwned[index])
     {
       case Items.Bow:
-        ShootBow();
+        ShootBow(index);
         break;
       case Items.Cucumber:
         StartCoroutine(CucumberTrigger());
         playerController.Invincibility = true;
         _canCucumber = false;
+        _cucumberCount--;
+        itemUIController.CucumberCount.text = _cucumberCount.ToString();
+        if (_cucumberCount == 0)
+        {
+          RemoveItem(index);
+        }
         break;
       case Items.Mushroom:
         StartCoroutine(MushroomTrigger());
@@ -129,43 +148,35 @@ public class ItemController : MonoBehaviour
         _canMushroom = false;
         break;
       default:
+        RemoveItem(index);
         break;
     }
   }
 
-  // Overloaded method, 
-  public bool UseItem(Items item)
+  public void UseItem(Items item)
   {
-    if (!ItemsOwned.Contains(item))
+    for (int i = 0; i < ItemsOwned.Count; i++)
     {
-      return false;
+      if (ItemsOwned[i] == item)
+      {
+        UseItem(i);
+      }
     }
-    RemoveItem(item);
-    return true;
   }
 
   private bool MaxHandle()
   {
-
     playerController.Talking = false;
     canvasController.CloseDialogueBox();
     return false;
   }
 
-  private void RemoveItem(Items item)
+  private void RemoveItem(int index)
   {
-    switch (item)
-    {
-      case Items.Bow:
-        _arrowCount = -1;
-        goto default;
-      case Items.Cucumber:
-        _cucumberCount = -1;
-        goto default;
-      default:
-        ItemsOwned.Remove(item);
-        break;
-    }
+    itemUIController.UpdateSlots(Items.Empty, index);
+    ItemsOwned[index] = Items.Empty;
+    _itemSpaceRemaining++;
+
   }
 
   private IEnumerator CucumberTrigger()
@@ -190,6 +201,7 @@ public class ItemController : MonoBehaviour
       SpecialItem = SpecialItems.None;
       _cucumberCount = -1;
       _arrowCount = -1;
+      _itemSpaceRemaining = 3;
       ItemsOwned = new() { Items.Empty, Items.Empty, Items.Empty };
       DontDestroyOnLoad(gameObject);
     }

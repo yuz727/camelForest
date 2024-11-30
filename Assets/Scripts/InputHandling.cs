@@ -86,8 +86,8 @@ public class InputHandling : MonoBehaviour
     {
       if (currentItem == 2) ret = 0;
       else ret = currentItem + 1;
+
     }
     return ret;
-
   }
 }

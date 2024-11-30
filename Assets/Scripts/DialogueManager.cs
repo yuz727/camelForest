@@ -19,7 +19,6 @@ public class DialogueManager : MonoBehaviour
     characterName.text = dialogue.NPCName;
     foreach (string dialogueSentence in dialogue.Sentences)
     {
-      Debug.Log(dialogueSentence);
       dialogueSentences.Enqueue(dialogueSentence);
     }
     var nextSetence = dialogueSentences.Dequeue();
