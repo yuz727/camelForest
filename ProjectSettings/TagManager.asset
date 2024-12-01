@@ -12,6 +12,7 @@ TagManager:
   - Duck
   - GroundCheck
   - Door
+  - vfx
   layers:
   - Default
   - TransparentFX

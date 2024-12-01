@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
   public LayerMask GroundLayer;
   public LayerMask StableGround;
   public Animator Anim;
+  public Animator Vfx;
   public SpriteRenderer Sprite;
   public bool CanDoubleJump;
   public bool CanDash;
@@ -36,6 +37,7 @@ public class PlayerController : MonoBehaviour
 
   void Update()
   {
+
     if (_dashing || Talking || Viewing)
     {
       Anim.SetBool("isJump", false);
@@ -65,6 +67,13 @@ public class PlayerController : MonoBehaviour
     {
       Dash();
     }
+    if (Invincibility)
+    {
+      Anim.SetBool("isJump", false);
+      Anim.SetBool("isRun", false);
+      Anim.SetBool("isDash", false);
+      Anim.SetBool("isCucumber", true);
+    }
   }
 
   void FixedUpdate()
@@ -78,7 +87,13 @@ public class PlayerController : MonoBehaviour
     }
 
     if (_grounded && CanDoubleJump) ExtraJump = 1;
-
+    if (Invincibility)
+    {
+      Anim.SetBool("isJump", false);
+      Anim.SetBool("isRun", false);
+      Anim.SetBool("isDash", false);
+      Anim.SetBool("isCucumber", true);
+    }
   }
 
   void Move()
@@ -219,6 +234,7 @@ public class PlayerController : MonoBehaviour
     {
       _facingRight = false;
       Anim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
+      Vfx = GameObject.FindGameObjectWithTag("vfx").GetComponent<Animator>();
       Sprite = GameObject.FindGameObjectWithTag("Player").GetComponent<SpriteRenderer>();
       GroundLayer = LayerMask.GetMask("Ground");
       StableGround = LayerMask.GetMask("StableGround");

@@ -150,6 +150,7 @@ public class ItemController : MonoBehaviour
         {
           StartCoroutine(CucumberTrigger());
           playerController.Invincibility = true;
+          playerController.Vfx.SetBool("cVfx", true);
           _canCucumber = false;
           _cucumberCount--;
           itemUIController.CucumberCount.text = _cucumberCount.ToString();
@@ -163,6 +164,7 @@ public class ItemController : MonoBehaviour
         if (_canMushroom)
         {
           StartCoroutine(MushroomTrigger());
+          playerController.Vfx.SetBool("mVfx", true);
           playerController.Mushroomed = true;
           _canMushroom = false;
         }
@@ -194,6 +196,8 @@ public class ItemController : MonoBehaviour
   private IEnumerator CucumberTrigger()
   {
     yield return new WaitForSeconds(5f);
+    playerController.Vfx.SetBool("cVfx", false);
+    playerController.Anim.SetBool("isCucumber", false);
     playerController.Invincibility = false;
     _canCucumber = true;
   }
@@ -201,6 +205,7 @@ public class ItemController : MonoBehaviour
   private IEnumerator MushroomTrigger()
   {
     yield return new WaitForSeconds(10f);
+    playerController.Vfx.SetBool("mVfx", false);
     playerController.Mushroomed = false;
     _canMushroom = true;
   }
