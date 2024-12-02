@@ -13,6 +13,7 @@ public class SpikeTrigger : MonoBehaviour
   void Start()
   {
     playerController = FindObjectOfType<PlayerController>();
+    Spike = GetComponent<PolygonCollider2D>();
   }
 
   void FixedUpdate()

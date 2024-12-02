@@ -19,8 +19,8 @@ public class ItemController : MonoBehaviour
   private int _nextOpening;
   private bool _canCucumber = true;
   private bool _canMushroom = true;
-  private int _arrowCount;
-  private int _cucumberCount;
+  public int ArrowCount;
+  public int CucumberCount;
   public bool ReplacingItem;
   public CartState cartState;
 
@@ -53,6 +53,7 @@ public class ItemController : MonoBehaviour
       return;
     }
     else if (InputHandling.CheckUseItem()) UseItem(_index);
+
   }
 
   void DiscardItem()
@@ -100,11 +101,11 @@ public class ItemController : MonoBehaviour
       switch (item)
       {
         case Items.Bow:
-          _arrowCount = 20;
+          ArrowCount = 20;
           itemUIController.ArrowCount.text = "20";
           goto default;
         case Items.Cucumber:
-          _cucumberCount = 5;
+          CucumberCount = 5;
           itemUIController.CucumberCount.text = "5";
           goto default;
         default:
@@ -130,9 +131,9 @@ public class ItemController : MonoBehaviour
   public void ShootBow(int index)
   {
     //TODO: Implement
-    _arrowCount--;
-    itemUIController.ArrowCount.text = _arrowCount.ToString();
-    if (_arrowCount <= 0)
+    ArrowCount--;
+    itemUIController.ArrowCount.text = ArrowCount.ToString();
+    if (ArrowCount <= 0)
     {
       RemoveItem(index);
     }
@@ -152,9 +153,9 @@ public class ItemController : MonoBehaviour
           playerController.Invincibility = true;
           playerController.Vfx.SetBool("cVfx", true);
           _canCucumber = false;
-          _cucumberCount--;
-          itemUIController.CucumberCount.text = _cucumberCount.ToString();
-          if (_cucumberCount == 0)
+          CucumberCount--;
+          itemUIController.CucumberCount.text = CucumberCount.ToString();
+          if (CucumberCount == 0)
           {
             RemoveItem(index);
           }
@@ -217,8 +218,8 @@ public class ItemController : MonoBehaviour
       S_Instance = this;
       SpecialItem = SpecialItems.None;
       cartState = CartState.Basketball;
-      _cucumberCount = -1;
-      _arrowCount = -1;
+      CucumberCount = 5;
+      ArrowCount = 20;
       _itemSpaceRemaining = 3;
       ItemsOwned = new() { Items.Empty, Items.Empty, Items.Empty };
       DontDestroyOnLoad(gameObject);

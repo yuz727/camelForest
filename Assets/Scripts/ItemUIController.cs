@@ -23,12 +23,14 @@ public class ItemUIController : MonoBehaviour
 
   void Start()
   {
-    CucumberCount.text = "5";
-    ArrowCount.text = "20";
-    _occupiedSlots = new GameObject[] { Bow, Notebook, Mushroom };
     itemController = FindFirstObjectByType<ItemController>();
-    for (int i = 0; i < itemController.ItemsOwned.Count; i++)
+    CucumberCount.text = itemController.CucumberCount.ToString();
+    ArrowCount.text = itemController.ArrowCount.ToString();
+    _occupiedSlots = new GameObject[3];
+
+    for (int i = 0; i < 3; i++)
     {
+      Debug.Log(itemController.ItemsOwned[i]);
       UpdateSlots(itemController.ItemsOwned[i], i);
     }
     UpdateSpecialItem(itemController.SpecialItem);
@@ -70,7 +72,7 @@ public class ItemUIController : MonoBehaviour
         Mushroom.SetActive(true);
         break;
       default:
-        _occupiedSlots[index].SetActive(false);
+        if (_occupiedSlots[index] != null) _occupiedSlots[index].SetActive(false);
         break;
     }
   }

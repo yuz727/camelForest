@@ -208,7 +208,7 @@ public class PlayerController : MonoBehaviour
     {
       S_Instance = this;
       CanDoubleJump = false;
-      CanDash = true;
+      CanDash = false;
       DontDestroyOnLoad(gameObject);
     }
     else

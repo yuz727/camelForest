@@ -13,6 +13,7 @@ TagManager:
   - GroundCheck
   - Door
   - vfx
+  - wall
   layers:
   - Default
   - TransparentFX

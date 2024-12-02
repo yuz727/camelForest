@@ -19,7 +19,7 @@ public class InputHandling : MonoBehaviour
       Destroy(gameObject);
     }
   }
-  // 0 -> Jump, 1 -> UseItem, 2 -> Interact, 3 -> Dash 4 -> Switch Item Left, 5 -> Switch Item Right
+  // 0 -> Jump, 1 -> UseItem, 2 -> Interact, 3 -> Dash 4 -> Switch Item Left, 5 -> Switch Item Right, 6 -> UseSpecialItem, 7 -> Discard Item
   static List<KeyCode> keyCodes;
   public static void SetDualShock()
   {
@@ -29,7 +29,8 @@ public class InputHandling : MonoBehaviour
                       KeyCode.Joystick1Button5,
                       KeyCode.Joystick1Button6,
                       KeyCode.Joystick1Button7,
-                      KeyCode.Joystick1Button3};
+                      KeyCode.Joystick1Button3,
+                      KeyCode.Joystick1Button4};
   }
 
   public static void SetXbox()
@@ -40,7 +41,8 @@ public class InputHandling : MonoBehaviour
                       KeyCode.Joystick2Button5,
                       KeyCode.Mouse1,
                       KeyCode.Mouse0,
-                      KeyCode.Joystick1Button3};
+                      KeyCode.Joystick1Button3,
+                      KeyCode.Joystick1Button4};
   }
 
   public static bool CheckJumpDown()
@@ -57,11 +59,15 @@ public class InputHandling : MonoBehaviour
     return Input.GetKey(KeyCode.Space) || Input.GetKeyUp(keyCodes[0]);
   }
 
-  public static bool CheckDiscardItem()
+  public static bool CheckSpecialItem()
   {
-    return Input.GetKey(KeyCode.Tab) || Input.GetKeyUp(keyCodes[6]);
+    return Input.GetKey(KeyCode.R) || Input.GetKeyUp(keyCodes[6]);
   }
 
+  public static bool CheckDiscardItem()
+  {
+    return Input.GetKey(KeyCode.Tab) || Input.GetKeyUp(keyCodes[7]);
+  }
 
   public static bool CheckUseItem()
   {

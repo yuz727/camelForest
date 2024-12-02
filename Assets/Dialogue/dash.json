@@ -2,7 +2,26 @@
   "Dialogues": [
     {
       "NPCName": "Cat",
-      "Sentences": [""]
+      "Sentences": ["Here you are."]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": ["What are you doing here?", "What is all this wall?"]
+    },
+    {
+      "NPCName": "Cat",
+      "Sentences": [
+        "This is the obligatory powerup for the hero segment.",
+        "Gimme one moment."
+      ]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": ["???"]
+    },
+    {
+      "NPCName": "Cat",
+      "Sentences": ["Ok you can dash now.", "K good seeing you bye."]
     }
   ]
 }

@@ -24,7 +24,7 @@ public class SpecialItemsTrigger : MonoBehaviour
   {
     if (Rock.IsTouchingLayers(Player))
     {
-      if (InputHandling.CheckUseItem() && !_animating)
+      if (InputHandling.CheckSpecialItem() && !_animating)
       {
         switch (itemController.SpecialItem)
         {

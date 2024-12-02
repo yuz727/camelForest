@@ -13,6 +13,10 @@ public class DuckController : MonoBehaviour
 
   void Start()
   {
+    if (FindAnyObjectByType<ItemController>().cartState != CartState.Duck)
+    {
+      this.gameObject.SetActive(false);
+    }
     PlayerFeet = GameObject.FindGameObjectWithTag("GroundCheck").GetComponent<BoxCollider2D>();
     PlayerController = FindObjectOfType<PlayerController>();
   }

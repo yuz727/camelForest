@@ -13,9 +13,14 @@ public class BasketballTrigger : MonoBehaviour
   // Start is called before the first frame update
   void Start()
   {
+    if (FindAnyObjectByType<ItemController>().cartState != CartState.Basketball)
+    {
+      this.gameObject.SetActive(false);
+    }
     _work = true;
     playerController = FindFirstObjectByType<PlayerController>();
     render = GetComponent<Renderer>();
+
   }
 
   // Update is called once per frame
