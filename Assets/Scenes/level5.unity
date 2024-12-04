@@ -144476,6 +144476,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: sakikoanimation
       objectReference: {fileID: 0}
+    - target: {fileID: 1160356261127867848, guid: 02875cc2b6a916344996ce189c82f165, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: cf3fc1200cb196246a19f6d8b2637228, type: 2}
     - target: {fileID: 7878350319992209165, guid: 02875cc2b6a916344996ce189c82f165, type: 3}
       propertyPath: m_LocalScale.x
       value: 2
