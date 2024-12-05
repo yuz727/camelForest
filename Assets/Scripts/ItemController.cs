@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -8,21 +9,32 @@ public class ItemController : MonoBehaviour
 {
   public static ItemController S_Instance;
   public PlayerController playerController;
+  public GameObject Player;
   public ItemUIController itemUIController;
+  public BookController bookController;
   public CanvasController canvasController;
+  public ArrowController arrowController;
   public DialogueTrigger dialogueTrigger;
   public SpecialItems SpecialItem;
   public SpecialItems SpecialItemUsed;
+  public GameObject NoteBook;
+  public GameObject _thisBook;
+  public GameObject Arrow;
+  public GameObject _thisArrow;
+  public Renderer Bow;
   public List<Items> ItemsOwned;
   public int _index;
   public int _itemSpaceRemaining;
   private int _nextOpening;
   private bool _canCucumber = true;
   private bool _canMushroom = true;
+  private bool _canNotebook = true;
   public int ArrowCount;
   public int CucumberCount;
   public bool ReplacingItem;
   public CartState cartState;
+  public int ArrowFire;
+  public int BookIndex;
 
   void Update()
   {
@@ -31,10 +43,51 @@ public class ItemController : MonoBehaviour
     {
       DiscardItem();
     }
+    if (ArrowFire > -1)
+    {
+      if (arrowController.Hit)
+      {
+        Destroy(_thisArrow);
+        ReduceArrow();
+        _thisArrow = null;
+        arrowController = null;
+      }
+      else if (arrowController.Timer >= 2f)
+      {
+        Destroy(_thisArrow);
+        ArrowFire = -1;
+        _thisArrow = null;
+        arrowController = null;
+      }
+    }
+    if (BookIndex > -1)
+    {
+      if (bookController.Hit)
+      {
+        Destroy(_thisBook);
+        BookIndex = -1;
+        _thisBook = null;
+        bookController = null;
+        _canNotebook = true;
+      }
+      else if (bookController.Timer >= 2f)
+      {
+        Destroy(_thisBook);
+        BookIndex = -1;
+        _thisBook = null;
+        bookController = null;
+        _canNotebook = true;
+      }
+    }
     if (newIndex != -1)
     {
       itemUIController.UpdateSelect(newIndex);
       _index = newIndex;
+    }
+    if (Bow != null)
+    {
+      if (ItemsOwned[_index] == Items.Bow) Bow.enabled = true;
+      else Bow.enabled = false;
     }
     if (ReplacingItem && InputHandling.CheckInteract())
     {
@@ -130,21 +183,40 @@ public class ItemController : MonoBehaviour
 
   public void ShootBow(int index)
   {
-    //TODO: Implement
+    _thisArrow = Instantiate(Arrow, Player.transform.position, Quaternion.identity);
+    int dir = playerController._facingRight ? 1 : -1;
+    arrowController = _thisArrow.GetComponent<ArrowController>();
+    arrowController.Fire(dir);
+    ArrowFire = index;
+  }
+
+  private void ReduceArrow()
+  {
     ArrowCount--;
     itemUIController.ArrowCount.text = ArrowCount.ToString();
     if (ArrowCount <= 0)
     {
-      RemoveItem(index);
+      RemoveItem(ArrowFire);
     }
+    ArrowFire = -1;
   }
-
+  public void ThrowBook(int index)
+  {
+    _thisBook = Instantiate(NoteBook, Player.transform.position, Quaternion.identity);
+    int dir = playerController._facingRight ? 1 : -1;
+    bookController = _thisBook.GetComponent<BookController>();
+    bookController.Fire(dir);
+    BookIndex = index;
+  }
   private void UseItem(int index)
   {
     switch (ItemsOwned[index])
     {
       case Items.Bow:
-        ShootBow(index);
+        if (_thisArrow == null)
+        {
+          ShootBow(index);
+        }
         break;
       case Items.Cucumber:
         if (_canCucumber)
@@ -168,6 +240,15 @@ public class ItemController : MonoBehaviour
           playerController.Vfx.SetBool("mVfx", true);
           playerController.Mushroomed = true;
           _canMushroom = false;
+        }
+        break;
+      case Items.Notebook:
+        if (_canNotebook)
+        {
+          StartCoroutine(NotebookTrigger());
+          playerController.Notebooking = true;
+          _canNotebook = false;
+          ThrowBook(index);
         }
         break;
       default:
@@ -211,6 +292,13 @@ public class ItemController : MonoBehaviour
     _canMushroom = true;
   }
 
+  private IEnumerator NotebookTrigger()
+  {
+    yield return new WaitForSeconds(0.6f);
+    playerController.Notebooking = false;
+    playerController.Anim.SetBool("isThrow", false);
+  }
+
   void Awake()
   {
     if (S_Instance == null)
@@ -245,10 +333,17 @@ public class ItemController : MonoBehaviour
     Debug.Log("Entering " + scene.name);
     if (!scene.name.Equals("Menu"))
     {
+      ArrowFire = -1;
+      BookIndex = -1;
       itemUIController = FindFirstObjectByType<ItemUIController>();
       canvasController = FindFirstObjectByType<CanvasController>();
       playerController = FindFirstObjectByType<PlayerController>();
       dialogueTrigger = FindFirstObjectByType<DialogueTrigger>();
+      bookController = FindFirstObjectByType<BookController>();
+      Player = GameObject.FindGameObjectWithTag("Player");
+      Arrow = GameObject.FindGameObjectWithTag("Arrow");
+      Bow = GameObject.FindGameObjectWithTag("Bow").GetComponent<SpriteRenderer>();
+      NoteBook = GameObject.FindGameObjectWithTag("Notebook");
     }
   }
 }

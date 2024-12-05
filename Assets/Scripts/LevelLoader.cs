@@ -5,22 +5,27 @@ using UnityEngine.SceneManagement;
 
 public class LevelLoader : MonoBehaviour
 {
-  // public Animator transition; 
+  public Animator transition;
   public string levelName;
   public BoxCollider2D transitionTrigger;
   public LayerMask playerLayer;
 
+  void Start()
+  {
+    transition = GameObject.FindGameObjectWithTag("LevelTransition").GetComponent<Animator>();
+  }
+
   public void Update()
   {
     if (transitionTrigger.IsTouchingLayers(playerLayer))
-      SceneManager.LoadScene(levelName);
-    // StartCoroutine(LoadLevel());
+      StartCoroutine(LoadLevel());
   }
 
-  // IEnumerator LoadLevel() 
-  // {
-  // transition.SetTrigger("Start");
-  // yield return new WaitForSeconds(1f);
 
-  // }
+  IEnumerator LoadLevel()
+  {
+    transition.SetTrigger("FadeOut");
+    yield return new WaitForSeconds(1f);
+    SceneManager.LoadScene(levelName);
+  }
 }

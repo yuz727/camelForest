@@ -13,11 +13,15 @@ public class EnemyController : MonoBehaviour
   bool isDead = false;
   Animator anim;
   SpriteRenderer sprt;
+  public PolygonCollider2D Hitbox;
+  public LayerMask Arrow;
   // Start is called before the first frame update
   void Start()
   {
     anim = transform.GetComponent<Animator>();
     sprt = transform.GetComponent<SpriteRenderer>();
+    Hitbox = GetComponent<PolygonCollider2D>();
+    // Arrow = LayerMask.GetMask("Arrow");
   }
 
   // Update is called once per frame
@@ -25,6 +29,11 @@ public class EnemyController : MonoBehaviour
   {
     if (isDead)
     {
+      return;
+    }
+    if (Hitbox.IsTouchingLayers(Arrow))
+    {
+      Die();
       return;
     }
     if (distance > moveDistance)

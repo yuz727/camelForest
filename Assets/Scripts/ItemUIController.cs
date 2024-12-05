@@ -72,7 +72,7 @@ public class ItemUIController : MonoBehaviour
         Mushroom.SetActive(true);
         break;
       default:
-        if (_occupiedSlots[index] != null) _occupiedSlots[index].SetActive(false);
+        _occupiedSlots[index]?.SetActive(false);
         break;
     }
   }

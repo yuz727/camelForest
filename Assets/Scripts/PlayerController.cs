@@ -22,15 +22,18 @@ public class PlayerController : MonoBehaviour
   public bool Talking;
   public bool Jumping;
   public int ExtraJump;
+  public bool Notebooking;
   public bool Invincibility;
   public bool Mushroomed;
   public bool Viewing;
+  public GameObject Bow;
+  public SpriteRenderer BowSprite;
   public Vector3 RespawnPoint = new();
   private readonly float _acceleration = 50f;
   private readonly float _maxHorizontalSpeed = 5f;
   private readonly float _jumpSpeed = 20f;
   private readonly float _dashSpeed = 30f;
-  private bool _facingRight;
+  public bool _facingRight;
   private bool _grounded;
   private bool _dashing;
   private float _inputHorizontalDirection;
@@ -67,12 +70,22 @@ public class PlayerController : MonoBehaviour
     {
       Dash();
     }
+    // Enforce certain Animation
+    if (Notebooking)
+    {
+      Anim.SetBool("isJump", false);
+      Anim.SetBool("isRun", false);
+      Anim.SetBool("isDash", false);
+      Anim.SetBool("isCucumber", false);
+      Anim.SetBool("isThrow", true);
+    }
     if (Invincibility)
     {
       Anim.SetBool("isJump", false);
       Anim.SetBool("isRun", false);
       Anim.SetBool("isDash", false);
       Anim.SetBool("isCucumber", true);
+      Anim.SetBool("isThrow", false);
     }
   }
 
@@ -108,6 +121,18 @@ public class PlayerController : MonoBehaviour
     {
       _facingRight = !_facingRight;
       Sprite.flipX = !Sprite.flipX;
+      if (Bow != null)
+      {
+        BowSprite.flipX = !_facingRight;
+        if (_facingRight)
+        {
+          Bow.transform.localPosition = new(0.25f, 0.1f);
+        }
+        else
+        {
+          Bow.transform.localPosition = new(-0.25f, 0.1f);
+        }
+      }
     }
     if (!Jumping)
     {
@@ -207,8 +232,8 @@ public class PlayerController : MonoBehaviour
     if (S_Instance == null)
     {
       S_Instance = this;
-      CanDoubleJump = false;
-      CanDash = false;
+      CanDoubleJump = true;
+      CanDash = true;
       DontDestroyOnLoad(gameObject);
     }
     else
@@ -230,6 +255,11 @@ public class PlayerController : MonoBehaviour
   void OnSceneLoaded(Scene scene, LoadSceneMode mode)
   {
     Debug.Log("Entering " + scene.name);
+    if (scene.name.Equals("level1"))
+    {
+      CanDash = false;
+      CanDoubleJump = false;
+    }
     if (!scene.name.Equals("Menu"))
     {
       _facingRight = false;
@@ -240,6 +270,8 @@ public class PlayerController : MonoBehaviour
       StableGround = LayerMask.GetMask("StableGround");
       PlayerBody = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
       GroundCheck = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<BoxCollider2D>();
+      Bow = GameObject.FindGameObjectWithTag("Bow");
+      BowSprite = Bow.GetComponent<SpriteRenderer>();
     }
   }
 }
