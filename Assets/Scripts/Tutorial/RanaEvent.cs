@@ -38,13 +38,16 @@ public class RanaEvent : NPCController
   void FixedUpdate()
   {
     _canTalk = CheckPlayerOverlap();
-    if (UpTrigger.IsTouchingLayers(Player))
+    if (UpTrigger != null && DownTrigger != null)
     {
-      RanaLocation.position = new Vector3(84.56f, 26.48f, -2);
-    }
-    if (DownTrigger.IsTouchingLayers(Player))
-    {
-      RanaLocation.position = new Vector3(36.96f, -3.15f, -2);
+      if (UpTrigger.IsTouchingLayers(Player))
+      {
+        RanaLocation.position = new Vector3(84.56f, 26.48f, -2);
+      }
+      if (DownTrigger.IsTouchingLayers(Player))
+      {
+        RanaLocation.position = new Vector3(36.96f, -3.15f, -2);
+      }
     }
   }
 }

@@ -2,7 +2,7 @@
   "Dialogues": [
     {
       "NPCName": "???",
-      "Sentences": ["Ah, Ah", "Ya hear me?"]
+      "Sentences": ["Hey, you.", "You're finally awake."]
     },
     {
       "NPCName": "Wood",
@@ -10,15 +10,23 @@
     },
     {
       "NPCName": "???",
+      "Sentences": ["You're asleep right now."]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": ["How am I awake if I'm asleep."]
+    },
+    {
+      "NPCName": "???",
       "Sentences": [
-        "You're asleep right now.",
+        "You're sleepwalking then.",
         "This is eh,",
         "Like a tutorial section?"
       ]
     },
     {
       "NPCName": "Wood",
-      "Sentences": ["???"]
+      "Sentences": ["HuH?"]
     },
     {
       "NPCName": "???",

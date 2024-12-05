@@ -5,12 +5,15 @@
       "Sentences": ["Wood!", "Are you going to look for Camel?"]
     },
     {
+      "NPCName": "Wood",
+      "Sentences": ["(Nods.)"]
+    },
+    {
       "NPCName": "London",
       "Sentences": [
-        "Do you know Duck has a Bow in his house?",
-        "Not like there is anything nearby that is hostile...",
-        "Blacksmith's has some dynmaite that you might be able to use...",
-        "There's also some statue to the west of the village..."
+        "Well Veggie didn't told me about it until last night, so I didn't get anything for you.",
+        "But I know there are things you can pick up around the village.",
+        "Just come talk to me if you need some directions!"
       ]
     }
   ]

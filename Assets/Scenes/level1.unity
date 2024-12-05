@@ -217,7 +217,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -7467909505818705552, guid: 4a364c923bbe8224ea1f68c652d3aa2b, type: 3}
+  m_Sprite: {fileID: 7739803843685405887, guid: 4a364c923bbe8224ea1f68c652d3aa2b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -9271,6 +9271,7 @@ MonoBehaviour:
   playerController: {fileID: 0}
   itemController: {fileID: 0}
   NPCDialogue: {fileID: 4900000, guid: 2ed877f2c14e0024ba46e39789ca86e3, type: 3}
+  StartRepeat: 0
 --- !u!61 &1730139787
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
   public SpriteRenderer Sprite;
   public bool CanDoubleJump;
   public bool CanDash;
+  private bool _dashReady;
   public bool Talking;
   public bool Jumping;
   public int ExtraJump;
@@ -66,7 +67,7 @@ public class PlayerController : MonoBehaviour
       Jumping = false;
       PlayerBody.velocity = new Vector2(PlayerBody.velocity.x, 0);
     }
-    if (InputHandling.CheckDash() && CanDash)
+    if (InputHandling.CheckDash() && CanDash && _dashReady)
     {
       Dash();
     }
@@ -198,7 +199,7 @@ public class PlayerController : MonoBehaviour
     yield return new WaitForSeconds(time);
     PlayerBody.gravityScale = gravity;
     PlayerBody.velocity = new Vector2(PlayerBody.velocity.x, 0);
-    CanDash = false;
+    _dashReady = false;
     _dashing = false;
     Anim.SetBool("isDash", false);
     StartCoroutine(DashCooldown());
@@ -207,7 +208,7 @@ public class PlayerController : MonoBehaviour
   private IEnumerator DashCooldown()
   {
     yield return new WaitForSeconds(.5f);
-    CanDash = true;
+    _dashReady = true;
   }
 
   public void KillPlayer()
@@ -234,6 +235,7 @@ public class PlayerController : MonoBehaviour
       S_Instance = this;
       CanDoubleJump = true;
       CanDash = true;
+      _dashReady = true;
       DontDestroyOnLoad(gameObject);
     }
     else
