@@ -16,6 +16,7 @@ public class L4EntryTrigger : MonoBehaviour
     GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");
     if (playerController.CanDoubleJump)
     {
+      Debug.Log("?");
       L3Transition.SetActive(false);
       block.SetActive(false);
       camera.transform.position = new(233.82f, -23.59f, -10f);
