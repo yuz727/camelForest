@@ -112042,6 +112042,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transition: {fileID: 0}
+  playerController: {fileID: 0}
   levelName: Level4
   transitionTrigger: {fileID: 677699038}
   playerLayer:
@@ -116111,6 +116112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transition: {fileID: 0}
+  playerController: {fileID: 0}
   levelName: Level3
   transitionTrigger: {fileID: 1321853602}
   playerLayer:
@@ -118981,63 +118983,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7878350319992209165, guid: c3d618423af28204d9f28d22df322b60, type: 3}
   m_PrefabInstance: {fileID: 1886701311}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1921347452
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1921347455}
-  - component: {fileID: 1921347454}
-  - component: {fileID: 1921347453}
-  m_Layer: 0
-  m_Name: LevelEvents
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1921347453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1921347452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4486320c6d8965f4d91b1fe4597eaa82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1921347454
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1921347452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a58f9f16130adba47913f6b787c31b53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1921347455
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1921347452}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 37.26753, y: -4.48149, z: -2.078436}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1922511248 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3802359083379807287, guid: 696ff1c6f13ce5c41ba1e636f40e1ac3, type: 3}
@@ -119236,7 +119181,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 4
-      m_TileSpriteIndex: 4
+      m_TileSpriteIndex: 5
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -119246,7 +119191,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 4
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -119716,7 +119661,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 5
-      m_TileSpriteIndex: 1
+      m_TileSpriteIndex: 2
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -119909,16 +119854,16 @@ Tilemap:
   m_TileSpriteArray:
   - m_RefCount: 73
     m_Data: {fileID: -1703733471, guid: b425613db706e0a49821a35253ec9db1, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 1
     m_Data: {fileID: -910712923, guid: b425613db706e0a49821a35253ec9db1, type: 3}
   - m_RefCount: 1
-    m_Data: {fileID: -1094225622, guid: b425613db706e0a49821a35253ec9db1, type: 3}
-  - m_RefCount: 1
     m_Data: {fileID: 2090670947, guid: b425613db706e0a49821a35253ec9db1, type: 3}
   - m_RefCount: 1
+    m_Data: {fileID: -1094225622, guid: b425613db706e0a49821a35253ec9db1, type: 3}
+  - m_RefCount: 1
     m_Data: {fileID: -350087372, guid: b425613db706e0a49821a35253ec9db1, type: 3}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
   m_TileMatrixArray:
   - m_RefCount: 77
     m_Data:
@@ -121228,7 +121173,6 @@ SceneRoots:
   - {fileID: 527651766}
   - {fileID: 1814225473}
   - {fileID: 845385358}
-  - {fileID: 1921347455}
   - {fileID: 1387138663}
   - {fileID: 1969782712}
   - {fileID: 802944930}

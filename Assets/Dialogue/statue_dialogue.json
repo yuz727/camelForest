@@ -6,7 +6,7 @@
     },
     {
       "NPCName": "Wood",
-      "Sentences": ["?", "You don't speak English?"]
+      "Sentences": ["?", "Do you speak English?"]
     },
     {
       "NPCName": "Staue",

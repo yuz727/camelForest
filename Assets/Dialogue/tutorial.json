@@ -2,7 +2,33 @@
   "Dialogues": [
     {
       "NPCName": "???",
-      "Sentences": ["Ah, Ah", "Test, TEst,"]
+      "Sentences": ["Ah, Ah", "Ya hear me?"]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": ["Who is this?", "Where am I?"]
+    },
+    {
+      "NPCName": "???",
+      "Sentences": [
+        "You're asleep right now.",
+        "This is eh,",
+        "Like a tutorial section?"
+      ]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": ["???"]
+    },
+    {
+      "NPCName": "???",
+      "Sentences": [
+        "Your childhood friend Camel went missing, ya forgot?",
+        "I know you're capable, but I figured got to get you something to warm up again.",
+        "Remember to talk to your friends before you leave the town.",
+        "They got some gifts for you.",
+        "K bye."
+      ]
     }
   ]
 }

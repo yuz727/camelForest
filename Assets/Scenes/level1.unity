@@ -969,63 +969,6 @@ MonoBehaviour:
   itemController: {fileID: 0}
   NPCDialogue: {fileID: 4900000, guid: e46cc989c7768924ea8ffb2ddf55c8d7, type: 3}
   StartRepeat: 0
---- !u!1 &297725383
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 297725385}
-  - component: {fileID: 297725384}
-  - component: {fileID: 297725386}
-  m_Layer: 0
-  m_Name: LevelEvents
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &297725384
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 297725383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a58f9f16130adba47913f6b787c31b53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &297725385
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 297725383}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 37.26753, y: -4.48149, z: -2.078436}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &297725386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 297725383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4486320c6d8965f4d91b1fe4597eaa82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &328597625 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2253911629886400664, guid: 3649820601a6e4041948ba9236e5bea5, type: 3}
@@ -1867,6 +1810,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transition: {fileID: 0}
+  playerController: {fileID: 0}
   levelName: Level2
   transitionTrigger: {fileID: 566026497}
   playerLayer:
@@ -68353,7 +68297,6 @@ SceneRoots:
   - {fileID: 176725001}
   - {fileID: 793922596}
   - {fileID: 1568291237}
-  - {fileID: 297725385}
   - {fileID: 1288258312}
   - {fileID: 1129066677}
   - {fileID: 1694086984}

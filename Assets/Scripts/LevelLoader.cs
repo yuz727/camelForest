@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class LevelLoader : MonoBehaviour
 {
   public Animator transition;
+  public PlayerController playerController;
   public string levelName;
   public BoxCollider2D transitionTrigger;
   public LayerMask playerLayer;
@@ -13,6 +14,7 @@ public class LevelLoader : MonoBehaviour
   void Start()
   {
     transition = GameObject.FindGameObjectWithTag("LevelTransition").GetComponent<Animator>();
+    playerController = FindFirstObjectByType<PlayerController>();
   }
 
   public void Update()
@@ -26,6 +28,10 @@ public class LevelLoader : MonoBehaviour
   {
     transition.SetTrigger("FadeOut");
     yield return new WaitForSeconds(1f);
+    // if (SceneManager.GetActiveScene().name.Equals("level0"))
+    // {
+    //   playerController.d
+    // }
     SceneManager.LoadScene(levelName);
   }
 }
