@@ -41,5 +41,6 @@ public class GabeEvent : NPCController
   void FixedUpdate()
   {
     _canTalk = CheckPlayerOverlap();
+    // if(!_canTalk) playerController.Talking = false;
   }
 }

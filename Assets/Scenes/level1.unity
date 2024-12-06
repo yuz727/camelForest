@@ -5585,7 +5585,7 @@ MonoBehaviour:
   canvasController: {fileID: 0}
   playerController: {fileID: 0}
   itemController: {fileID: 0}
-  NPCDialogue: {fileID: 0}
+  NPCDialogue: {fileID: 4900000, guid: 43d7484166d715a4eaadfe4f291de565, type: 3}
 --- !u!1 &1512478858 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2253911629886400664, guid: 2e309daf96c65094d9f11e31f3206950, type: 3}
