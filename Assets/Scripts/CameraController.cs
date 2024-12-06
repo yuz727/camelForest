@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour
   public PlayerController playerController;
   public bool LookingDown;
   public float translationFactor = 20;
-  private readonly float _maxOffset = 3f;
+  private readonly float _maxOffset = 6f;
   public float LookTimer;
   private float _inputDirection;
   public CameraState _cameraState;

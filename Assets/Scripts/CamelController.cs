@@ -45,6 +45,7 @@ public class CamelController : NPCController
       if (!_isTalking && !_continue)
       {
         StartCoroutine(ChairAnim());
+        playerController.Talking = true;
         Chair.SetBool("isPlay", true);
       }
       else if (!_isTalking && _continue)

@@ -53,10 +53,12 @@ public class EndingScript : NPCController
       if (!_isTalking && _status == 2)
       {
         StartCoroutine(LoadCredits("EndingFade"));
+        _inEnding = false;
       }
       if (!_isTalking && _status == 1 && _E1E)
       {
         StartCoroutine(LoadCredits("FadeOut"));
+        _inEnding = false;
       }
       if (!_isTalking && _status == 1 && !_E1E)
       {
@@ -97,7 +99,7 @@ public class EndingScript : NPCController
   IEnumerator LoadCredits(string trigger)
   {
     transition.SetTrigger(trigger);
-    yield return new WaitForSeconds(1f);
+    yield return new WaitForSeconds(2f);
     SceneManager.LoadScene("Credits");
   }
 }
