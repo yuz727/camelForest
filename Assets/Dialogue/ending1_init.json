@@ -1,0 +1,16 @@
+{
+  "Dialogues": [
+    {
+      "NPCName": "Wood",
+      "Sentences": ["Time to Come home now."]
+    },
+    {
+      "NPCName": "Camel",
+      "Sentences": ["Water...", "I ... Need ... Water..."]
+    },
+    {
+      "NPCName": "Veggie.",
+      "Sentences": ["Wood!", "Catch!"]
+    }
+  ]
+}

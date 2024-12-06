@@ -20,6 +20,7 @@ public class CanvasController : MonoBehaviour
   public Image Current;
   public Image Statue;
   public Image Empty;
+  public Image CryingSoyo;
   public bool Active;
   void Start()
   {
@@ -44,6 +45,7 @@ public class CanvasController : MonoBehaviour
         "Duck" => Gabe,
         "Camel" => Sakiko,
         "Statue" => Statue,
+        "Veggie." => CryingSoyo,
         _ => Empty,
       };
       Current.enabled = true;

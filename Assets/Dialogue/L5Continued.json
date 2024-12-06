@@ -1,0 +1,34 @@
+{
+  "Dialogues": [
+    {
+      "NPCName": "Camel",
+      "Sentences": [
+        "I swam outside through the village river.",
+        "How did you..."
+      ]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": [
+        "When did you learn how to swim though?",
+        "You're a camel, no?",
+        "You do look like you're almost drying out. Somehow."
+      ]
+    },
+    {
+      "NPCName": "Camel",
+      "Sentences": ["...", "Stop following me."]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": [
+        "Folks back home are worried about you.",
+        "Time to go home."
+      ]
+    },
+    {
+      "NPCName": "Camel",
+      "Sentences": ["...", "Try."]
+    }
+  ]
+}

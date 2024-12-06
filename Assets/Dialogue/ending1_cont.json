@@ -1,0 +1,30 @@
+{
+  "Dialogues": [
+    {
+      "NPCName": "Wood",
+      "Sentences": ["Feeling Better?"]
+    },
+    {
+      "NPCName": "Camel",
+      "Sentences": [
+        "Ya better keep me in this.",
+        "I'm not gonna be in charge of the cart anymore."
+      ]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": ["Yeah, Yeah.", "Why do Camel get dehydrated anyway?"]
+    },
+    {
+      "NPCName": "Camel",
+      "Sentences": [
+        "Cuz I'm a octopus?",
+        "Anyway, where did you guys got the saltwater?"
+      ]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": ["Veggie's tears?"]
+    }
+  ]
+}

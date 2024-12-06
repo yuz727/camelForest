@@ -2,7 +2,56 @@
   "Dialogues": [
     {
       "NPCName": "Duck",
-      "Sentences": [""]
+      "Sentences": ["Oh, Wood!", "Been a while since I've seen you!"]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": ["The entire town was here yesterday..."]
+    },
+    {
+      "NPCName": "Duck",
+      "Sentences": ["Anyway, why are you here?"]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": ["I've heard you've got something for me?"]
+    },
+    {
+      "NPCName": "Duck",
+      "Sentences": [
+        "Ah yes, the crowbar!",
+        "But you got to do something for me before I can give it to you."
+      ]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": ["What do you need?"]
+    },
+    {
+      "NPCName": "Duck",
+      "Sentences": [
+        "Go talk to more than two and less than four people in the village to come and find me.",
+        "I need some hands with moving."
+      ]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": ["Go talk to thre..."]
+    },
+    {
+      "NPCName": "Duck",
+      "Sentences": ["HEY!!!", "WE DO NOT SAY THAT WORK HERE!!!"]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": [
+        "...",
+        "I literally don't have time for fetch quests right now."
+      ]
+    },
+    {
+      "NPCName": "Duck",
+      "Sentences": ["Fine, go come see me after you get Camel back then."]
     }
   ]
 }

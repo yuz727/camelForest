@@ -38,10 +38,14 @@ public class ItemController : MonoBehaviour
 
   void Update()
   {
+
     var newIndex = InputHandling.CheckSwitchItem(_index);
-    if (InputHandling.CheckDiscardItem())
+    if (!playerController.Talking)
     {
-      DiscardItem();
+      if (InputHandling.CheckDiscardItem())
+      {
+        DiscardItem();
+      }
     }
     if (ArrowFire > -1)
     {
@@ -64,13 +68,14 @@ public class ItemController : MonoBehaviour
     {
       if (bookController.Hit)
       {
+        Debug.Log("hit");
         Destroy(_thisBook);
         BookIndex = -1;
         _thisBook = null;
         bookController = null;
         _canNotebook = true;
       }
-      else if (bookController.Timer >= 2f)
+      else if (bookController.Timer >= 0.75f)
       {
         Destroy(_thisBook);
         BookIndex = -1;
@@ -105,7 +110,7 @@ public class ItemController : MonoBehaviour
       canvasController.CloseDialogueBox();
       return;
     }
-    else if (InputHandling.CheckUseItem()) UseItem(_index);
+    else if (!playerController.Talking && InputHandling.CheckUseItem()) UseItem(_index);
 
   }
 
@@ -331,7 +336,19 @@ public class ItemController : MonoBehaviour
   void OnSceneLoaded(Scene scene, LoadSceneMode mode)
   {
     Debug.Log("Entering " + scene.name);
-    if (!scene.name.Equals("Menu"))
+    if (scene.name.Equals("level1"))
+    {
+      if (ItemsOwned[0] == Items.Bow)
+      {
+        RemoveItem(0);
+      }
+    }
+    if (scene.name.Equals("Menu") || scene.name.Equals("Credits"))
+    {
+      this.gameObject.SetActive(false);
+      Destroy(gameObject);
+    }
+    else if (!scene.name.Equals("Menu") || !scene.name.Equals("Credits"))
     {
       ArrowFire = -1;
       BookIndex = -1;

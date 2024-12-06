@@ -41,7 +41,6 @@ public class PlayerController : MonoBehaviour
 
   void Update()
   {
-
     if (_dashing || Talking || Viewing)
     {
       Anim.SetBool("isJump", false);
@@ -257,12 +256,18 @@ public class PlayerController : MonoBehaviour
   void OnSceneLoaded(Scene scene, LoadSceneMode mode)
   {
     Debug.Log("Entering " + scene.name);
+
     if (scene.name.Equals("level1"))
     {
       CanDash = false;
       CanDoubleJump = false;
     }
-    if (!scene.name.Equals("Menu"))
+    if (scene.name.Equals("Menu") || scene.name.Equals("Credits"))
+    {
+      this.gameObject.SetActive(false);
+      Destroy(gameObject);
+    }
+    else if (!scene.name.Equals("Menu") || !scene.name.Equals("Credits"))
     {
       _facingRight = false;
       Anim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
@@ -275,6 +280,7 @@ public class PlayerController : MonoBehaviour
       Bow = GameObject.FindGameObjectWithTag("Bow");
       BowSprite = Bow.GetComponent<SpriteRenderer>();
     }
+
   }
 }
 

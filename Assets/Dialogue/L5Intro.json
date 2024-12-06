@@ -1,0 +1,22 @@
+{
+  "Dialogues": [
+    {
+      "NPCName": "Wood",
+      "Sentences": [
+        "Here you are.",
+        "Furthest that you've gotten away from town."
+      ]
+    },
+    {
+      "NPCName": "???",
+      "Sentences": [
+        "How did you find me?",
+        "Let me guess, GOAT told you where I went?"
+      ]
+    },
+    {
+      "NPCName": "Wood",
+      "Sentences": ["There's literally one path out of the village."]
+    }
+  ]
+}

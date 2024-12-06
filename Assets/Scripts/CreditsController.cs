@@ -22,7 +22,7 @@ public class CreditsController : MonoBehaviour
   {
     if (Done && Input.anyKeyDown)
     {
-      SceneManager.LoadScene("level0");
+      SceneManager.LoadScene("Menu");
     }
   }
 
