@@ -1,7 +1,7 @@
 {
   "Dialogues": [
     {
-      "NPCName": "Staue",
+      "NPCName": "Statue",
       "Sentences": ["勇者お。", "ようこそ", "この剣をあげます。"]
     },
     {
@@ -9,7 +9,7 @@
       "Sentences": ["?", "Do you speak English?"]
     },
     {
-      "NPCName": "Staue",
+      "NPCName": "Statue",
       "Sentences": [
         "Oh, I'm in an English Speaking Country now?",
         "You're the first one that came here for like a couple decades.",
@@ -24,7 +24,7 @@
       ]
     },
     {
-      "NPCName": "Staue",
+      "NPCName": "Statue",
       "Sentences": [
         "Anyway, here's the holy sword that has been stored here.",
         "Go use as a tool to spread hope upon these lands."
@@ -38,7 +38,7 @@
       ]
     },
     {
-      "NPCName": "Staue",
+      "NPCName": "Statue",
       "Sentences": ["You're gonna do what?!"]
     }
   ]
